@@ -23,6 +23,14 @@ void ReadCredentials(std::ifstream& ifile, credentials category[], int size_arr)
 	}
 }
 
+void WriteCredentials(std::ofstream& ofile, credentials category[], int size_arr) {
+	for (int i = 0; i < size_arr; i++) {
+		ofile << category[i].username << '	';
+		ofile << category[i].pass << '	';
+		ofile << category[i].name << '\n';
+	}
+}
+
 std::string System_to_std_string(System::String^ temp) {
 	return msclr::interop::marshal_as<std::string>(temp);
 }

@@ -122,15 +122,27 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Admin_homepage.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Login.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Login_functions.h" />
+    <ClInclude Include="functions.h" />
+    <ClInclude Include="Cred_Management.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="variables.h" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Admin_homepage.resx">
+      <DependentUpon>Admin_homepage.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cred_Management.resx">
+      <DependentUpon>Cred_Management.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

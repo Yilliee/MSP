@@ -23,10 +23,16 @@
     <ClInclude Include="Login.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Login_functions.h">
+    <ClInclude Include="functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Admin_homepage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cred_Management.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

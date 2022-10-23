@@ -1,11 +1,7 @@
 #pragma once
 #include "variables.h"
-#include "Login_functions.h"
-
-int authenticate(std::string username, std::string pass, credentials Categ_Cred[], int size_arr);
-void ReadCredentials(std::ifstream& ifile, credentials category[], int size_arr);
-std::string System_to_std_string(System::String^ temp);
-System::String^ std_to_System_string(std::string temp);
+#include "functions.h"
+#include "Admin_homepage.h"
 
 namespace MSP {
 
@@ -92,6 +88,7 @@ namespace MSP {
 			// 
 			// Username_label
 			// 
+			this->Username_label->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Username_label->AutoSize = true;
 			this->Username_label->CausesValidation = false;
 			this->Username_label->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -104,6 +101,7 @@ namespace MSP {
 			// 
 			// Password_label
 			// 
+			this->Password_label->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Password_label->AutoSize = true;
 			this->Password_label->CausesValidation = false;
 			this->Password_label->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -116,6 +114,7 @@ namespace MSP {
 			// 
 			// Username_textbox
 			// 
+			this->Username_textbox->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Username_textbox->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Username_textbox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -129,6 +128,7 @@ namespace MSP {
 			// 
 			// Password_textbox
 			// 
+			this->Password_textbox->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Password_textbox->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Password_textbox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -142,6 +142,7 @@ namespace MSP {
 			// 
 			// Login_button
 			// 
+			this->Login_button->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Login_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Login_button->Location = System::Drawing::Point(278, 280);
 			this->Login_button->Name = L"Login_button";
@@ -177,26 +178,23 @@ namespace MSP {
 		}
 #pragma endregion
 	private: System::Void Login_Load(System::Object^ sender, System::EventArgs^ e) {
-		// Custom Code - Start
-		std::ifstream stu("Credentials/Student_Creds.txt");
+		std::ifstream stu(Student_Cred_File);
 		ReadCredentials(stu, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
 		stu.close();
-		std::ifstream teach("Credentials/Teacher_Creds.txt");
+		std::ifstream teach(Teacher_Cred_File);
 		ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
 		teach.close();
-		std::ifstream admin("Credentials/Admin_Creds.txt");
+		std::ifstream admin(Admin_Cred_File);
 		ReadCredentials(admin, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 		admin.close();
-		// Custom Code - End
 	}
 	private: System::Void Login_button_Click(System::Object^ sender, System::EventArgs^ e) {
-		// Custom Code - Start	
 		std::string username = System_to_std_string(Username_textbox->Text);
 		std::string pass = System_to_std_string(Password_textbox->Text);
 
-		int student_no = authenticate(username, pass, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
-		int teach_no = authenticate(username, pass, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
-		int admin_no = authenticate(username, pass, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
+		student_no = authenticate(username, pass, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
+		teach_no = authenticate(username, pass, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
+		admin_no = authenticate(username, pass, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 		if (student_no != -1) {
 			MessageBox::Show(std_to_System_string(Stu_Cred[student_no].name) + " (no. " + student_no + ") successfully logged on.");
 			// Open stu home page
@@ -208,9 +206,13 @@ namespace MSP {
 		else if (admin_no != -1) {
 			MessageBox::Show(std_to_System_string(Admin_Cred[admin_no].name) + " (no. " + admin_no + ") successfully logged on.");
 			// Open admin home page
+			Admin_homepage hp;
+			// Hide the currrent winform, open the new one and then close the old one.
+			this->Hide();
+			hp.ShowDialog();
+			this->Close();
 		}
 		else MessageBox::Show("Incorrect Email or Password.");
-		// Custom Code - End
 	}
 };
 }
