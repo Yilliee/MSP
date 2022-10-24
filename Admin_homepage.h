@@ -1,7 +1,7 @@
 #pragma once
 #include "variables.h"
 #include "functions.h"
-#include "Cred_Management.h"
+#include "Sec_mgmt.h"
 
 namespace MSP {
 
@@ -41,6 +41,14 @@ namespace MSP {
 	private: System::Windows::Forms::Button^ Stu_button;
 	private: System::Windows::Forms::Button^ Teach_button;
 	private: System::Windows::Forms::Button^ Sub_button;
+
+
+
+
+
+
+
+
 	protected:
 
 	private:
@@ -141,16 +149,16 @@ namespace MSP {
 	}
 	private: System::Void Stu_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = STU_mode; // Student
-		open_cred_winform();
+		Sec_mgmt Sec_mgmt_winfrom;
+		this->Hide();
+		Sec_mgmt_winfrom.ShowDialog();
+		this->Close();
 	}
 	private: System::Void Teach_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = TEACH_mode;
-		open_cred_winform();
-	}
-	private: System::Void open_cred_winform(Void) {
-		Cred_Management cred_mg_winfrom;
+		Cred_Management Cred_mgmt_winfrom;
 		this->Hide();
-		cred_mg_winfrom.ShowDialog();
+		Cred_mgmt_winfrom.ShowDialog();
 		this->Close();
 	}
 };

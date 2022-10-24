@@ -116,6 +116,7 @@ namespace MSP {
 			// 
 			this->Username_textbox->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Username_textbox->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Username_textbox->Cursor = System::Windows::Forms::Cursors::IBeam;
 			this->Username_textbox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Username_textbox->Location = System::Drawing::Point(278, 185);
@@ -124,7 +125,6 @@ namespace MSP {
 			this->Username_textbox->Size = System::Drawing::Size(230, 25);
 			this->Username_textbox->TabIndex = 3;
 			this->Username_textbox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-			this->Username_textbox->UseWaitCursor = true;
 			// 
 			// Password_textbox
 			// 
@@ -178,25 +178,40 @@ namespace MSP {
 		}
 #pragma endregion
 	private: System::Void Login_Load(System::Object^ sender, System::EventArgs^ e) {
-		std::ifstream stu(Student_Cred_File);
-		ReadCredentials(stu, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
-		stu.close();
+		std::ifstream settings(settings_file);
+		ReadSettings(settings, &saved);
+		settings.close();
+
+		for ( int i = 0; i < saved.sections; i++){
+			std::ifstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+
+			ReadCredentials(stu, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+			stu.close();
+		}
 		std::ifstream teach(Teacher_Cred_File);
 		ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
 		teach.close();
 		std::ifstream admin(Admin_Cred_File);
 		ReadCredentials(admin, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 		admin.close();
+
 	}
 	private: System::Void Login_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::string username = System_to_std_string(Username_textbox->Text);
 		std::string pass = System_to_std_string(Password_textbox->Text);
 
-		student_no = authenticate(username, pass, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
+		for (int i = 0; i < saved.sections; i++) {
+			student_no = authenticate(username, pass, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+			
+			if (student_no != -1) {
+				curr_sec = i;
+				break;
+			}
+		}
 		teach_no = authenticate(username, pass, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
 		admin_no = authenticate(username, pass, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 		if (student_no != -1) {
-			MessageBox::Show(std_to_System_string(Stu_Cred[student_no].name) + " (no. " + student_no + ") successfully logged on.");
+			MessageBox::Show(std_to_System_string(Stu_Cred[curr_sec][student_no].name) + " (no. " + student_no + ") successfully logged on.");
 			// Open stu home page
 		}
 		else if (teach_no != -1) {

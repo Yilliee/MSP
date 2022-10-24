@@ -132,6 +132,9 @@
     <ClInclude Include="Cred_Management.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Sec_mgmt.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="variables.h" />
   </ItemGroup>
   <ItemGroup>
@@ -144,11 +147,17 @@
     <EmbeddedResource Include="Cred_Management.resx">
       <DependentUpon>Cred_Management.h</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Sec_mgmt.resx">
+      <DependentUpon>Sec_mgmt.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Credentials\Admin_Creds.txt" />
-    <Text Include="Credentials\Student_Creds.txt" />
+    <Text Include="Credentials\Sections\Sec_A.txt" />
+    <Text Include="Credentials\Sections\Sec_B.txt" />
+    <Text Include="Credentials\Sections\Sec_C.txt" />
     <Text Include="Credentials\Teacher_Creds.txt" />
+    <Text Include="Settings\saved.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

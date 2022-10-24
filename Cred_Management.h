@@ -1,7 +1,7 @@
 #pragma once
 #include "variables.h"
 #include "functions.h"
-
+ 
 namespace MSP {
 
 	using namespace System;
@@ -10,6 +10,7 @@ namespace MSP {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
 
 	/// <summary>
 	/// Summary for Student_management
@@ -161,7 +162,8 @@ namespace MSP {
 			if (mode == STU_mode)
 				this->Name_header->Text = L"Student Name";
 			else if (mode == TEACH_mode)
-				this->Name_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+				this->Name_header->Text = L"Teacher Name";
+			this->Name_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 			// 
 			// Email_header
@@ -300,7 +302,7 @@ namespace MSP {
 		for (int i = 0; i < Max_size[mode]; i++) {
 			credentials tmp;
 			if (mode == STU_mode)
-				tmp = Stu_Cred[i];
+				tmp = Stu_Cred[curr_sec][i];
 			else if (mode == TEACH_mode)
 				tmp = Teach_Cred[i];
 
@@ -314,9 +316,9 @@ namespace MSP {
 		for (int i = 0; i < Max_size[mode]; i++) {
 
 			if (mode == STU_mode) {
-				Stu_Cred[i].name = System_to_std_string(Name_tb[i]->Text);
-				Stu_Cred[i].username = System_to_std_string(Email_tb[i]->Text);
-				Stu_Cred[i].pass = System_to_std_string(Pass_tb[i]->Text);
+				Stu_Cred[curr_sec][i].name = System_to_std_string(Name_tb[i]->Text);
+				Stu_Cred[curr_sec][i].username = System_to_std_string(Email_tb[i]->Text);
+				Stu_Cred[curr_sec][i].pass = System_to_std_string(Pass_tb[i]->Text);
 			}
 			else if (mode == TEACH_mode) {
 				Teach_Cred[i].name = System_to_std_string(Name_tb[i]->Text);
@@ -326,9 +328,12 @@ namespace MSP {
 		}
 
 		if (mode == STU_mode) {
-			std::ofstream stu(Student_Cred_File);
-			WriteCredentials(stu, Stu_Cred, sizeof(Stu_Cred) / sizeof(*Stu_Cred));
-			stu.close();
+			for ( int i = 0; i < saved.sections; i++){
+				std::ofstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+				
+				WriteCredentials(stu, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+				stu.close();
+			}
 		}
 		else if (mode == TEACH_mode) {
 			std::ofstream Teach(Teacher_Cred_File);
@@ -337,7 +342,14 @@ namespace MSP {
 		}
 
 		MessageBox::Show("Credentials Updated Successfully !");
-
+		/*
+		// The issue 
+			// error C2065: 'Admin_homepage': undeclared identifier
+			this->Hide();
+			Admin_homepage obj;
+			obj.ShowDialog();
+			this->Close();
+		*/
 
 	}
 	private: System::Void Back_button_Click(System::Object^ sender, System::EventArgs^ e) {

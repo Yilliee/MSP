@@ -35,15 +35,27 @@
     <ClInclude Include="Cred_Management.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sec_mgmt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Credentials\Admin_Creds.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Credentials\Student_Creds.txt">
+    <Text Include="Credentials\Teacher_Creds.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Credentials\Teacher_Creds.txt">
+    <Text Include="Credentials\Sections\Sec_A.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Credentials\Sections\Sec_B.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Credentials\Sections\Sec_C.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Settings\saved.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
