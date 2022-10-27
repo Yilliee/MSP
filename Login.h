@@ -1,7 +1,7 @@
 #pragma once
 #include "variables.h"
 #include "functions.h"
-#include "Admin_homepage.h"
+#include "Admin.h"
 
 namespace MSP {
 
@@ -178,24 +178,24 @@ namespace MSP {
 		}
 #pragma endregion
 	private: System::Void Login_Load(System::Object^ sender, System::EventArgs^ e) {
-		std::ifstream settings(settings_file);
-		ReadSettings(settings, &saved);
-		settings.close();
+			std::ifstream settings(settings_file);
+			ReadSettings(settings, &saved);
+			settings.close();
 
-		for ( int i = 0; i < saved.sections; i++){
-			std::ifstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+			for ( int i = 0; i < saved.sections; i++){
+				std::ifstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+				
+				ReadCredentials(stu, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+				stu.close();
+			}
+			std::ifstream teach(Teacher_Cred_File);
+			ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
+			teach.close();
+			std::ifstream admin(Admin_Cred_File);
+			ReadCredentials(admin, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
+			admin.close();
 
-			ReadCredentials(stu, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
-			stu.close();
 		}
-		std::ifstream teach(Teacher_Cred_File);
-		ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
-		teach.close();
-		std::ifstream admin(Admin_Cred_File);
-		ReadCredentials(admin, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
-		admin.close();
-
-	}
 	private: System::Void Login_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::string username = System_to_std_string(Username_textbox->Text);
 		std::string pass = System_to_std_string(Password_textbox->Text);
@@ -221,7 +221,7 @@ namespace MSP {
 		else if (admin_no != -1) {
 			MessageBox::Show(std_to_System_string(Admin_Cred[admin_no].name) + " (no. " + admin_no + ") successfully logged on.");
 			// Open admin home page
-			Admin_homepage hp;
+			Admin hp;
 			// Hide the currrent winform, open the new one and then close the old one.
 			this->Hide();
 			hp.ShowDialog();
