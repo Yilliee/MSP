@@ -2,6 +2,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "Admin.h"
+#include "Teacher_homepage.h"
 
 namespace MSP {
 
@@ -179,14 +180,17 @@ namespace MSP {
 #pragma endregion
 	private: System::Void Login_Load(System::Object^ sender, System::EventArgs^ e) {
 			std::ifstream settings(settings_file);
-			ReadSettings(settings, &saved);
+			ReadSettings(settings, saved);
 			settings.close();
 
 			for ( int i = 0; i < saved.sections; i++){
-				std::ifstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+				std::ifstream stucred(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
+				ReadCredentials(stucred, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+				stucred.close();
 				
-				ReadCredentials(stu, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
-				stu.close();
+				std::ifstream stumarks(Marks_Folder + "Sec_" + Sec_list[i] + ".txt");
+				ReadMarks(stumarks, Student_marks[i], sizeof(Student_marks[i]) / sizeof(*Student_marks[i]), Max_Subjects, Max_Quizzes);
+				stumarks.close();
 			}
 			std::ifstream teach(Teacher_Cred_File);
 			ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
@@ -201,7 +205,7 @@ namespace MSP {
 		std::string pass = System_to_std_string(Password_textbox->Text);
 
 		for (int i = 0; i < saved.sections; i++) {
-			student_no = authenticate(username, pass, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+			if (username != "" && pass != "") student_no = authenticate(username, pass, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
 			
 			if (student_no != -1) {
 				curr_sec = i;
@@ -217,14 +221,20 @@ namespace MSP {
 		else if (teach_no != -1) {
 			MessageBox::Show(std_to_System_string(Teach_Cred[teach_no].name) + " (no. " + teach_no + ") successfully logged on.");
 			// Open teach home page
+			Teacher_homepage thp;
+			// Hide the currrent winform, open the new one and then close the old one.
+			this->Hide();
+			thp.ShowDialog();
+			this->Close();
+
 		}
 		else if (admin_no != -1) {
 			MessageBox::Show(std_to_System_string(Admin_Cred[admin_no].name) + " (no. " + admin_no + ") successfully logged on.");
 			// Open admin home page
-			Admin hp;
+			Admin ahp;
 			// Hide the currrent winform, open the new one and then close the old one.
 			this->Hide();
-			hp.ShowDialog();
+			ahp.ShowDialog();
 			this->Close();
 		}
 		else MessageBox::Show("Incorrect Email or Password.");

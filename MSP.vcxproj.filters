@@ -32,6 +32,21 @@
     <ClInclude Include="Admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Teacher_homepage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sec_selector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exam_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quiz_selector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Marksheet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Credentials\Admin_Creds.txt">

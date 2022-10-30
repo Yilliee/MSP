@@ -47,6 +47,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <CLRSupport>true</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -88,6 +89,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -125,18 +130,54 @@
     <ClInclude Include="Admin.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Exam_type.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Login.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="functions.h" />
+    <ClInclude Include="Marksheet.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Quiz_selector.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Sec_selector.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Teacher_homepage.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="variables.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Admin.resx">
       <DependentUpon>Admin.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Exam_type.resx">
+      <DependentUpon>Exam_type.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Marksheet.resx">
+      <DependentUpon>Marksheet.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Quiz_selector.resx">
+      <DependentUpon>Quiz_selector.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Sec_selector.resx">
+      <DependentUpon>Sec_selector.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Teacher_homepage.resx">
+      <DependentUpon>Teacher_homepage.h</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -50,11 +50,12 @@ namespace MSP {
 	private: System::Windows::Forms::Button^ New_Sec_button;
 	private: System::Windows::Forms::Button^ Back_from_Sec_button;
 	private: int new_sec_button_y = 121 + 31 * (saved.sections - 1);
-	private: array<Button^>^ Section = gcnew array<Button^>(Absolute_Max_sizes[SECTION]);
+	private: array<Button^>^ Section = gcnew array<Button^>(Max_Sections);
 	// Section_manager - end
 
 	// Credentials_manager
 	private: array<Label^>^ Sr_l = gcnew array<Label^>(Absolute_Max_sizes[mode]);
+	private: array<TextBox^>^ ID_tb = gcnew array<TextBox^>(Absolute_Max_sizes[mode]);
 	private: array<TextBox^>^ Name_tb = gcnew array<TextBox^>(Absolute_Max_sizes[mode]);
 	private: array<TextBox^>^ Email_tb = gcnew array<TextBox^>(Absolute_Max_sizes[mode]);
 	private: array<TextBox^>^ Pass_tb = gcnew array<TextBox^>(Absolute_Max_sizes[mode]);
@@ -64,6 +65,7 @@ namespace MSP {
 	private: System::Windows::Forms::Button^ Back_from_Cred_button;
 
 	private: System::Windows::Forms::Label^ Sr_header;
+	private: System::Windows::Forms::Label^ ID_header;
 	private: System::Windows::Forms::Label^ Name_header;
 	private: System::Windows::Forms::Label^ Email_header;
 	private: System::Windows::Forms::Label^ Pass_header;
@@ -79,14 +81,14 @@ namespace MSP {
 
 		// Section_manager
 		void load_buttons(int sec) {
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++) {
+			for (int i = 0; i < Max_Sections; i++) {
 				if (sec > i) this->Section[i]->Visible = true;
 				else this->Section[i]->Visible = false;
 
 				if (sec == 1) this->Sec_del_button->Visible = false;
 				else this->Sec_del_button->Visible = true;
 
-				if (sec == Absolute_Max_sizes[SECTION]) this->New_Sec_button->Visible = false;
+				if (sec == Max_Sections) this->New_Sec_button->Visible = false;
 				else this->New_Sec_button->Visible = true;
 
 			}
@@ -112,15 +114,15 @@ namespace MSP {
 			// Admin_hp_header
 			// 
 			this->Admin_hp_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->Admin_hp_header->AutoSize = true;
 			this->Admin_hp_header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Admin_hp_header->Location = System::Drawing::Point(227, 39);
+			this->Admin_hp_header->Location = System::Drawing::Point(9, 39);
 			this->Admin_hp_header->Name = L"Admin_hp_header";
-			this->Admin_hp_header->Size = System::Drawing::Size(0, 31);
+			this->Admin_hp_header->Size = System::Drawing::Size(701, 31);
 			this->Admin_hp_header->TabIndex = 0;
 			this->Admin_hp_header->Text = L"Welcome, ";
 			this->Admin_hp_header->Text += std_to_System_string(Admin_Cred[admin_no].name + "!");
+			this->Admin_hp_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Stu_button
 			// 
@@ -216,7 +218,7 @@ namespace MSP {
 			this->New_Sec_button = (gcnew System::Windows::Forms::Button());
 			this->Back_from_Sec_button = (gcnew System::Windows::Forms::Button());
 
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++) {
+			for (int i = 0; i < Max_Sections; i++) {
 				this->Section[i] = (gcnew System::Windows::Forms::Button());
 			}
 
@@ -237,7 +239,7 @@ namespace MSP {
 			// Section_Array
 			// 
 			int y_pos = 90;
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++) {
+			for (int i = 0; i < Max_Sections; i++) {
 				this->Section[i]->Anchor = System::Windows::Forms::AnchorStyles::Top; //static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Top);// | System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Left);
 				this->Section[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Section[i]->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
@@ -307,7 +309,7 @@ namespace MSP {
 			this->Back_from_Sec_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Back_from_Sec_button->Location = System::Drawing::Point(New_Sec_button->Left, New_Sec_button->Top + 35);
-			if (saved.sections == Absolute_Max_sizes[SECTION])
+			if (saved.sections == Max_Sections)
 				this->Back_from_Sec_button->Top -= 35;
 			this->Back_from_Sec_button->Name = L"Back_to_home_del";
 			this->Back_from_Sec_button->Size = System::Drawing::Size(200, 25);
@@ -328,7 +330,7 @@ namespace MSP {
 			this->Controls->Add(this->New_Sec_button);
 			this->Controls->Add(this->Sec_del_button);
 			this->Controls->Add(this->Back_from_Sec_button);
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++)
+			for (int i = 0; i < Max_Sections; i++)
 				this->Controls->Add(this->Section[i]);
 
 			this->Name = L"Section_manager";
@@ -347,7 +349,7 @@ namespace MSP {
 			this->Controls->Remove(this->Sec_del_button);
 			this->Controls->Remove(this->Back_from_Sec_button);
 
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++)
+			for (int i = 0; i < Max_Sections; i++)
 				this->Controls->Remove(this->Section[i]);
 		}
 		// Remove_Components_Section_manager - end 
@@ -360,12 +362,14 @@ namespace MSP {
 			this->Back_from_Cred_button = (gcnew System::Windows::Forms::Button());
 			
 			this->Sr_header = (gcnew System::Windows::Forms::Label());
+			this->ID_header = (gcnew System::Windows::Forms::Label());
 			this->Name_header = (gcnew System::Windows::Forms::Label());
 			this->Email_header = (gcnew System::Windows::Forms::Label());
 			this->Pass_header = (gcnew System::Windows::Forms::Label());
 
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				Sr_l[i] = gcnew Label();
+				ID_tb[i] = gcnew TextBox();
 				Name_tb[i] = gcnew TextBox();
 				Email_tb[i] = gcnew TextBox();
 				Pass_tb[i] = gcnew TextBox();
@@ -390,14 +394,14 @@ namespace MSP {
 			// 
 			// Save_button
 			//
-			this->Save_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Top);
+			this->Save_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
 			this->Save_button->BackColor = System::Drawing::Color::Lavender;
 			this->Save_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Save_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Save_button->Location = System::Drawing::Point(542, 61);
+			this->Save_button->Location = System::Drawing::Point(660, 61);
 			this->Save_button->Name = L"Save_button";
-			this->Save_button->Size = System::Drawing::Size(101, 23);
+			this->Save_button->Size = System::Drawing::Size(100, 23);
 			this->Save_button->TabIndex = 1;
 			this->Save_button->Text = L"Save";
 			this->Save_button->UseVisualStyleBackColor = false;
@@ -434,6 +438,21 @@ namespace MSP {
 			this->Sr_header->TabIndex = 2;
 			this->Sr_header->Text = L"Sr.";
 			this->Sr_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			
+			// 
+			// ID_header
+			// 
+			this->ID_header->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
+			this->ID_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->ID_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->ID_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->ID_header->Location = System::Drawing::Point(this->Sr_header->Left + this->Sr_header->Width + 5, this->Sr_header->Top);
+			this->ID_header->Name = L"ID_header";
+			this->ID_header->Size = System::Drawing::Size(100, 25);
+			this->ID_header->TabIndex = 3;
+			this->ID_header->Text = L"ID";
+			this->ID_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Name_header
 			// 
@@ -442,7 +461,7 @@ namespace MSP {
 			this->Name_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Name_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Name_header->Location = System::Drawing::Point(45, 93);
+			this->Name_header->Location = System::Drawing::Point(this->ID_header->Left + this->ID_header->Width + 5, this->ID_header->Top);
 			this->Name_header->Name = L"Name_h";
 			this->Name_header->Size = System::Drawing::Size(200, 25);
 			this->Name_header->TabIndex = 4;
@@ -455,12 +474,12 @@ namespace MSP {
 			// 
 			// Email_header
 			// 
-			this->Email_header->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
+			this->Email_header->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
 			this->Email_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->Email_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Email_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Email_header->Location = System::Drawing::Point(250, 93);
+			this->Email_header->Location = System::Drawing::Point(this->Name_header->Left + this->Name_header->Width + 5, this->Name_header->Top);
 			this->Email_header->Name = L"Email_h";
 			this->Email_header->Size = System::Drawing::Size(200, 25);
 			this->Email_header->TabIndex = 5;
@@ -469,12 +488,12 @@ namespace MSP {
 			// 
 			// Pass_header
 			// 
-			this->Pass_header->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
+			this->Pass_header->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left);
 			this->Pass_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->Pass_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Pass_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Pass_header->Location = System::Drawing::Point(455, 93);
+			this->Pass_header->Location = System::Drawing::Point(this->Email_header->Left + this->Email_header->Width + 5, 93);
 			this->Pass_header->Name = L"Pass_h";
 			this->Pass_header->Size = System::Drawing::Size(200, 25);
 			this->Pass_header->TabIndex = 6;
@@ -484,7 +503,7 @@ namespace MSP {
 			// 
 			// Serial labels
 			// 
-			int y_pos = 124, tab_index = 9;
+			int y_pos = 124, inc = 31, tab_index = 7;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				Sr_l[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
 				Sr_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -495,62 +514,76 @@ namespace MSP {
 				Sr_l[i]->TabIndex = tab_index;
 				Sr_l[i]->Text = std_to_System_string(std::to_string(i + 1) + ')');
 				Sr_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-				y_pos += 31;
+				y_pos += inc;
+				tab_index += 4;
+			}
+			//
+			// Roll no
+			//
+			y_pos = 124, inc = 31, tab_index = 8;
+			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+				ID_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
+				ID_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				ID_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				ID_tb[i]->Location = System::Drawing::Point(this->Sr_l[i]->Left + this->Sr_l[i]->Width + 5, y_pos);
+				ID_tb[i]->Name = std_to_System_string("Name_" + std::to_string(i + 1));
+				ID_tb[i]->Size = System::Drawing::Size(100, 25);
+				ID_tb[i]->TabIndex = tab_index;
+				ID_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+				y_pos += inc;
 				tab_index += 4;
 			}
 			//
 			// Student name 
 			//
-			y_pos = 124, tab_index = 9;
+			y_pos = 124, inc = 31, tab_index = 9;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				Name_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
 				Name_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				Name_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				Name_tb[i]->Location = System::Drawing::Point(45, y_pos);
+				Name_tb[i]->Location = System::Drawing::Point(this->ID_tb[i]->Left + this->ID_tb[i]->Width + 5, y_pos);
 				Name_tb[i]->Name = std_to_System_string("Name_" + std::to_string(i + 1));
 				Name_tb[i]->Size = System::Drawing::Size(200, 25);
 				Name_tb[i]->TabIndex = tab_index;
 				Name_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-				y_pos += 31;
-				if (tab_index == 3) tab_index += 8;
-				else tab_index += 4;
+				y_pos += inc;
+				tab_index += 4;
 			}
 			//
 			// Email
 			//
-			y_pos = 124, tab_index = 7;
+			y_pos = 124, inc = 31, tab_index = 10;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				Email_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left);
+				Email_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left);
 				Email_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				Email_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				Email_tb[i]->Location = System::Drawing::Point(250, y_pos);
+				Email_tb[i]->Location = System::Drawing::Point(this->Name_tb[i]->Left + this->Name_tb[i]->Width + 5, y_pos);
 				Email_tb[i]->Name = std_to_System_string("Name_" + std::to_string(i + 1));
 				Email_tb[i]->Size = System::Drawing::Size(200, 25);
 				Email_tb[i]->TabIndex = tab_index;
 				Email_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-				y_pos += 31;
-				if (tab_index == 7) tab_index += 8;
-				else tab_index += 4;
+				y_pos += inc;
+				tab_index += 4;
 			}
 			//
 			// Pass
 			//
-			y_pos = 124, tab_index = 8;
+			y_pos = 124, inc = 31, tab_index = 11;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				Pass_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Top);
+				Pass_tb[i]->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
 				Pass_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				Pass_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				Pass_tb[i]->Location = System::Drawing::Point(455, y_pos);
+				Pass_tb[i]->Location = System::Drawing::Point(this->Email_tb[i]->Left + this->Email_tb[i]->Width + 5, y_pos);
 				Pass_tb[i]->Name = std_to_System_string("Pass_" + std::to_string(i + 1));
 				Pass_tb[i]->Size = System::Drawing::Size(200, 25);
 				Pass_tb[i]->TabIndex = tab_index;
 				Pass_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
-				y_pos += 31;
-				if (tab_index == 8) tab_index += 8;
-				else tab_index += 4;
+				y_pos += inc;
+				tab_index += 4;
 			}
 
 			// 
@@ -558,14 +591,16 @@ namespace MSP {
 			// 
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(655, 313);
+			this->ClientSize = System::Drawing::Size(780, 450);
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				this->Controls->Add(this->Sr_l[i]);
+				this->Controls->Add(this->ID_tb[i]);
 				this->Controls->Add(this->Name_tb[i]);
 				this->Controls->Add(this->Email_tb[i]);
 				this->Controls->Add(this->Pass_tb[i]);
 			}
 			this->Controls->Add(this->Sr_header);
+			this->Controls->Add(this->ID_header);
 			this->Controls->Add(this->Name_header);
 			this->Controls->Add(this->Email_header);
 			this->Controls->Add(this->Pass_header);
@@ -589,11 +624,13 @@ namespace MSP {
 		void Remove_Components_Credentials_manager(void) { // Remove_Components_Credentials_manager
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				this->Controls->Remove(this->Sr_l[i]);
+				this->Controls->Remove(this->ID_tb[i]);
 				this->Controls->Remove(this->Name_tb[i]);
 				this->Controls->Remove(this->Email_tb[i]);
 				this->Controls->Remove(this->Pass_tb[i]);
 			}
 			this->Controls->Remove(this->Sr_header);
+			this->Controls->Remove(this->ID_header);
 			this->Controls->Remove(this->Name_header);
 			this->Controls->Remove(this->Email_header);
 			this->Controls->Remove(this->Pass_header);
@@ -682,7 +719,7 @@ namespace MSP {
 
 		Sec_del_button->Top = Section[saved.sections - 1]->Top;
 		New_Sec_button->Top = Sec_del_button->Top + 35;
-		if ( saved.sections != Absolute_Max_sizes[SECTION] ) Back_from_Sec_button->Top = New_Sec_button->Top + 35;
+		if ( saved.sections != Max_Sections ) Back_from_Sec_button->Top = New_Sec_button->Top + 35;
 		
 		this->Sec_del_button->BringToFront();
 		//new_sec_button_y += 31;
@@ -742,7 +779,7 @@ namespace MSP {
 				tmp = Stu_Cred[curr_sec][i];
 			else if (mode == TEACH)
 				tmp = Teach_Cred[i];
-
+			ID_tb[i]->Text = std_to_System_string(tmp.id);
 			Name_tb[i]->Text = std_to_System_string(tmp.name);
 			Email_tb[i]->Text = std_to_System_string(tmp.username);
 			Pass_tb[i]->Text = std_to_System_string(tmp.pass);
@@ -753,11 +790,13 @@ namespace MSP {
 		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 
 			if (mode == STU) {
+				Stu_Cred[curr_sec][i].id = System_to_std_string(ID_tb[i]->Text);
 				Stu_Cred[curr_sec][i].name = System_to_std_string(Name_tb[i]->Text);
 				Stu_Cred[curr_sec][i].username = System_to_std_string(Email_tb[i]->Text);
 				Stu_Cred[curr_sec][i].pass = System_to_std_string(Pass_tb[i]->Text);
 			}
 			else if (mode == TEACH) {
+				Teach_Cred[i].id = System_to_std_string(ID_tb[i]->Text);
 				Teach_Cred[i].name = System_to_std_string(Name_tb[i]->Text);
 				Teach_Cred[i].username = System_to_std_string(Email_tb[i]->Text);
 				Teach_Cred[i].pass = System_to_std_string(Pass_tb[i]->Text);
@@ -766,12 +805,9 @@ namespace MSP {
 		}
 		
 		if (mode == STU) {
-			for (int i = 0; i < Absolute_Max_sizes[SECTION]; i++) {
-				std::ofstream stu(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
-
-				WriteCredentials(stu, Stu_Cred[i], Absolute_Max_sizes[STU]);
-				stu.close();
-			}
+			std::ofstream stu(Student_Cred_Folder + "Sec_" + Sec_list[curr_sec] + ".txt");
+			WriteCredentials(stu, Stu_Cred[curr_sec], Max_Students);
+			stu.close();
 		}
 		else if (mode == TEACH) {
 			std::ofstream Teach(Teacher_Cred_File);
