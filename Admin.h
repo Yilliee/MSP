@@ -1,6 +1,8 @@
 #pragma once
 #include "variables.h"
 #include "functions.h"
+#include "Subjects_manager.h"
+#include "Subject_allotment.h"
 
 namespace MSP {
 
@@ -69,7 +71,10 @@ namespace MSP {
 	private: System::Windows::Forms::Label^ Name_header;
 	private: System::Windows::Forms::Label^ Email_header;
 	private: System::Windows::Forms::Label^ Pass_header;
-	// Credentials_manager - end
+	private: System::Windows::Forms::Button^ SubAllot_button;
+
+
+		   // Credentials_manager - end
 
 	protected:
 
@@ -85,12 +90,13 @@ namespace MSP {
 				if (sec > i) this->Section[i]->Visible = true;
 				else this->Section[i]->Visible = false;
 
-				if (sec == 1) this->Sec_del_button->Visible = false;
-				else this->Sec_del_button->Visible = true;
-
-				if (sec == Max_Sections) this->New_Sec_button->Visible = false;
-				else this->New_Sec_button->Visible = true;
-
+				if (mode != SUBJECTS) {
+					if (sec == 1) this->Sec_del_button->Visible = false;
+					else this->Sec_del_button->Visible = true;
+				
+					if (sec == Max_Sections) this->New_Sec_button->Visible = false;
+					else this->New_Sec_button->Visible = true;
+				}
 			}
 
 
@@ -109,6 +115,7 @@ namespace MSP {
 			this->Teach_button = (gcnew System::Windows::Forms::Button());
 			this->Sub_button = (gcnew System::Windows::Forms::Button());
 			this->Logout_button = (gcnew System::Windows::Forms::Button());
+			this->SubAllot_button = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// Admin_hp_header
@@ -121,7 +128,6 @@ namespace MSP {
 			this->Admin_hp_header->Size = System::Drawing::Size(701, 31);
 			this->Admin_hp_header->TabIndex = 0;
 			this->Admin_hp_header->Text = L"Welcome, ";
-			this->Admin_hp_header->Text += std_to_System_string(Admin_Cred[admin_no].name + "!");
 			this->Admin_hp_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Stu_button
@@ -131,7 +137,7 @@ namespace MSP {
 			this->Stu_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Stu_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Stu_button->Location = System::Drawing::Point(248, 137);
+			this->Stu_button->Location = System::Drawing::Point(248, 120);
 			this->Stu_button->Name = L"Stu_button";
 			this->Stu_button->Size = System::Drawing::Size(229, 31);
 			this->Stu_button->TabIndex = 1;
@@ -146,7 +152,7 @@ namespace MSP {
 			this->Teach_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Teach_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Teach_button->Location = System::Drawing::Point(248, 191);
+			this->Teach_button->Location = System::Drawing::Point(248, 166);
 			this->Teach_button->Name = L"Teach_button";
 			this->Teach_button->Size = System::Drawing::Size(229, 31);
 			this->Teach_button->TabIndex = 2;
@@ -161,12 +167,13 @@ namespace MSP {
 			this->Sub_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Sub_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Sub_button->Location = System::Drawing::Point(248, 247);
+			this->Sub_button->Location = System::Drawing::Point(248, 212);
 			this->Sub_button->Name = L"Sub_button";
 			this->Sub_button->Size = System::Drawing::Size(229, 31);
 			this->Sub_button->TabIndex = 3;
 			this->Sub_button->Text = L"Manage Subjects";
 			this->Sub_button->UseVisualStyleBackColor = false;
+			this->Sub_button->Click += gcnew System::EventHandler(this, &Admin::Sub_button_Click);
 			// 
 			// Logout_button
 			// 
@@ -178,26 +185,42 @@ namespace MSP {
 			this->Logout_button->Location = System::Drawing::Point(248, 303);
 			this->Logout_button->Name = L"Logout_button";
 			this->Logout_button->Size = System::Drawing::Size(229, 31);
-			this->Logout_button->TabIndex = 4;
+			this->Logout_button->TabIndex = 5;
 			this->Logout_button->Text = L"Logout";
 			this->Logout_button->UseVisualStyleBackColor = false;
 			this->Logout_button->Click += gcnew System::EventHandler(this, &Admin::Logout_button_Click);
+			// 
+			// SubAllot_button
+			// 
+			this->SubAllot_button->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->SubAllot_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->SubAllot_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->SubAllot_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->SubAllot_button->Location = System::Drawing::Point(248, 258);
+			this->SubAllot_button->Name = L"SubAllot_button";
+			this->SubAllot_button->Size = System::Drawing::Size(229, 31);
+			this->SubAllot_button->TabIndex = 4;
+			this->SubAllot_button->Text = L"Subject Allotment";
+			this->SubAllot_button->UseVisualStyleBackColor = false;
+			this->SubAllot_button->Click += gcnew System::EventHandler(this, &Admin::SubAllot_button_Click);
+
 			// 
 			// Admin
 			// 
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->ClientSize = System::Drawing::Size(719, 363);
-			this->Controls->Add(this->Logout_button);
-			this->Controls->Add(this->Sub_button);
-			this->Controls->Add(this->Teach_button);
-			this->Controls->Add(this->Stu_button);
 			this->Controls->Add(this->Admin_hp_header);
+			this->Controls->Add(this->Stu_button);
+			this->Controls->Add(this->Teach_button);
+			this->Controls->Add(this->Sub_button);
+			this->Controls->Add(this->SubAllot_button);
+			this->Controls->Add(this->Logout_button);
 			this->Name = L"Admin";
 			this->Text = L"Admin";
 			this->Load += gcnew System::EventHandler(this, &Admin::Admin_Load);
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		} // Admin_homepage - end
 
@@ -206,6 +229,7 @@ namespace MSP {
 			this->Controls->Remove(this->Teach_button);
 			this->Controls->Remove(this->Stu_button);
 			this->Controls->Remove(this->Admin_hp_header);
+			this->Controls->Remove(this->SubAllot_button);
 			this->Controls->Remove(this->Logout_button);
 		} // Remove_components_homepage - end
 
@@ -308,7 +332,10 @@ namespace MSP {
 			this->Back_from_Sec_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Back_from_Sec_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Back_from_Sec_button->Location = System::Drawing::Point(New_Sec_button->Left, New_Sec_button->Top + 35);
+			if (mode != SUBJECTS)
+				this->Back_from_Sec_button->Location = System::Drawing::Point(New_Sec_button->Left, New_Sec_button->Top + 35);
+			else
+				this->Back_from_Sec_button->Location = System::Drawing::Point((Section[saved.sections - 1]->Left), Section[saved.sections - 1]->Top + 35);
 			if (saved.sections == Max_Sections)
 				this->Back_from_Sec_button->Top -= 35;
 			this->Back_from_Sec_button->Name = L"Back_to_home_del";
@@ -327,8 +354,10 @@ namespace MSP {
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->ClientSize = System::Drawing::Size(684, 412);
 			this->Controls->Add(this->Section_manager_header);
-			this->Controls->Add(this->New_Sec_button);
-			this->Controls->Add(this->Sec_del_button);
+			if ( mode != SUBJECTS){
+				this->Controls->Add(this->New_Sec_button);
+				this->Controls->Add(this->Sec_del_button);
+			}
 			this->Controls->Add(this->Back_from_Sec_button);
 			for (int i = 0; i < Max_Sections; i++)
 				this->Controls->Add(this->Section[i]);
@@ -641,6 +670,10 @@ namespace MSP {
 #pragma endregion
 	// Functions - Admin_homepage
 	private: System::Void Admin_Load(System::Object^ sender, System::EventArgs^ e) {
+		for (int i = 0; i < saved.sections; i++) {
+			std::ifstream sub_file(Subject_Folder + "Sec_" + Sec_list[i] + ".txt");
+			ReadSubjects(sub_file, subjects_details[i], sizeof(subjects_details) / sizeof(*subjects_details), Max_Subjects);
+		}
 	}
 	private: System::Void Stu_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = STU;
@@ -652,7 +685,20 @@ namespace MSP {
 	private: System::Void Teach_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = TEACH;
 		open_cred_winform();
-	} 
+	}
+	private: System::Void Sub_button_Click(System::Object^ sender, System::EventArgs^ e) {
+		mode = SUBJECTS;
+		this->Hide();
+		Remove_Components_homepage();
+		InitializeComponent_Section_manager();
+		this->Show();
+	}
+	private: System::Void SubAllot_button_Click(System::Object^ sender, System::EventArgs^ e) {
+		Subject_allotment suballot;
+		this->Hide();
+		suballot.ShowDialog();
+		this->Close();
+	}
 	private: System::Void Logout_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 	}
@@ -662,52 +708,82 @@ namespace MSP {
 	private: System::Void Select_Section_A(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 0;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_B(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 1;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_C(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 2;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_D(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 3;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_E(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 4;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_F(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 5;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_G(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 6;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_H(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 7;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_I(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 8;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Select_Section_J(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = 9;
 		update_settings();
-		open_cred_winform();
+		if (mode == SUBJECTS)
+			open_subject_manager();
+		else
+			open_cred_winform();
 	}
 	private: System::Void Create_New_Section(System::Object^ sender, System::EventArgs^ e) {
 		load_buttons(++saved.sections);
@@ -770,6 +846,12 @@ namespace MSP {
 
 		this->Show();
 	} // Functions - Section_manager - end
+	private: System::Void open_subject_manager(Void) {
+		Subjects_manager sbmgr;
+		this->Hide();
+		sbmgr.ShowDialog();
+		this->Close();
+	}
 
 	// Functions - Credential_manager
 	private: System::Void Credential_manager_init(Void) {
@@ -826,6 +908,6 @@ namespace MSP {
 		InitializeComponent_Section_manager();
 		this->Show();
 	}
-	 // Functions - Credentials_manager - end
+	// Functions - Credentials_manager - end
 };
 }

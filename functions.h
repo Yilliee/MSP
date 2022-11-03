@@ -78,7 +78,30 @@ void WriteMarks(ofstream& ofile, StuMarks student[], int size_arr, int subject_c
 	}
 
 }
-void ReadSettings(ifstream& ifile, Settings &saved) {	
+
+
+void ReadSubjects(ifstream& ifile, Subjects sub[], int size_arr, int max_sub) {
+	string tmp;
+	for (int i = 0; i < max_sub; i++) {
+		getline(ifile, sub[i].course_code, '	');
+		getline(ifile, sub[i].name, '	');
+		getline(ifile, tmp, '\n');
+		if ( tmp != "" ) 
+			sub[i].teach_no = stoi(tmp);
+		else 
+			sub[i].teach_no = 0;
+	}
+}
+
+void WriteSubjects(ofstream& ofile, Subjects sub[], int size_arr, int max_sub) {
+	for (int i = 0; i < max_sub; i++){
+		ofile << sub[i].course_code << '	';
+		ofile << sub[i].name << '	';
+		ofile << sub[i].teach_no << '\n';
+	}
+}
+
+void ReadSettings(ifstream& ifile, Settings &saved) {
 	string tmp_input;
 	getline(ifile, tmp_input, '\n');
 	saved.sections = stoi(tmp_input);

@@ -47,6 +47,12 @@
     <ClInclude Include="Marksheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Subjects_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject_allotment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Credentials\Admin_Creds.txt">

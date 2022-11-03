@@ -143,7 +143,13 @@
     <ClInclude Include="Quiz_selector.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Subject_allotment.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="Sec_selector.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Subjects_manager.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Teacher_homepage.h">
@@ -172,8 +178,14 @@
       <DependentUpon>Quiz_selector.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Subject_allotment.resx">
+      <DependentUpon>Subject_allotment.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sec_selector.resx">
       <DependentUpon>Sec_selector.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Subjects_manager.resx">
+      <DependentUpon>Subjects_manager.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Teacher_homepage.resx">
       <DependentUpon>Teacher_homepage.h</DependentUpon>
