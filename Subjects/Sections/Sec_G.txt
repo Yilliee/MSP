@@ -1,5 +1,0 @@
-CS1002	Programming Fundamentals	5
-NS1001	Applied Physics	6
-MT1003	Calculus and Analytical Geometry	7
-CL1000	Introduction to Information and Communication Technology	8
-SS1004	English Composition and Comprehension	9

@@ -130,29 +130,11 @@
     <ClInclude Include="Admin.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Exam_type.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="Login.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="functions.h" />
-    <ClInclude Include="Marksheet.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Quiz_selector.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Subject_allotment.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Sec_selector.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Subjects_manager.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
-    <ClInclude Include="Teacher_homepage.h">
+    <ClInclude Include="Teacher.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="variables.h" />
@@ -162,43 +144,13 @@
       <DependentUpon>Admin.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Exam_type.resx">
-      <DependentUpon>Exam_type.h</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.h</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Marksheet.resx">
-      <DependentUpon>Marksheet.h</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Teacher.resx">
+      <DependentUpon>Teacher.h</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Quiz_selector.resx">
-      <DependentUpon>Quiz_selector.h</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Subject_allotment.resx">
-      <DependentUpon>Subject_allotment.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Sec_selector.resx">
-      <DependentUpon>Sec_selector.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Subjects_manager.resx">
-      <DependentUpon>Subjects_manager.h</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Teacher_homepage.resx">
-      <DependentUpon>Teacher_homepage.h</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Credentials\Admin_Creds.txt" />
-    <Text Include="Credentials\Sections\Sec_A.txt" />
-    <Text Include="Credentials\Sections\Sec_B.txt" />
-    <Text Include="Credentials\Sections\Sec_C.txt" />
-    <Text Include="Credentials\Teacher_Creds.txt" />
-    <Text Include="Settings\saved.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

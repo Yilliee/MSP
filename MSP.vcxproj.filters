@@ -32,46 +32,8 @@
     <ClInclude Include="Admin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Teacher_homepage.h">
+    <ClInclude Include="Teacher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sec_selector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Exam_type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Quiz_selector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Marksheet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subjects_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subject_allotment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Credentials\Admin_Creds.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Credentials\Teacher_Creds.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Credentials\Sections\Sec_A.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Credentials\Sections\Sec_B.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Credentials\Sections\Sec_C.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Settings\saved.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>
