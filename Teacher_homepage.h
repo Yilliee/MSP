@@ -2,6 +2,7 @@
 #include "variables.h"	
 #include "functions.h"
 #include "Sec_selector.h"
+#include "Attendance_layout.h"
 
 namespace MSP {
 
@@ -155,7 +156,10 @@ namespace MSP {
 		this->Close();
 	}
 	private: System::Void Manage_attendance_button_Click(System::Object^ sender, System::EventArgs^ e) {
-
+		Attendance_layout att;
+		this->Hide();
+		att.ShowDialog();
+		this->Close();
 	}
 	private: System::Void Logout_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
