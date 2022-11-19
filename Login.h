@@ -154,34 +154,10 @@ namespace MSP {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Login";
 			this->Text = L"Signin";
-			this->Load += gcnew System::EventHandler(this, &Login::Login_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
-#pragma endregion
-	private: System::Void Login_Load(System::Object^ sender, System::EventArgs^ e) {
-			std::ifstream settings(settings_file);
-			ReadSettings(settings, saved);
-			settings.close();
 
-			for ( int i = 0; i < saved.sections; i++){
-				std::ifstream stucred(Student_Cred_Folder + "Sec_" + Sec_list[i] + ".txt");
-				ReadCredentials(stucred, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
-				stucred.close();
-
-				std::ifstream stumarks(Marks_Folder + "Sec_" + Sec_list[i] + ".txt");
-				ReadMarks(stumarks, Student_marks[i], sizeof(Student_marks[i]) / sizeof(*Student_marks[i]), Max_Subjects, Max_Quizzes, Max_Assignments);
-				stumarks.close();
-			}
-			std::ifstream teach(Teacher_Cred_File);
-			ReadCredentials(teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
-			teach.close();
-			std::ifstream admin(Admin_Cred_File);
-			ReadCredentials(admin, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
-			admin.close();
-
-		}
 	private: System::Void Login_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		std::string username = Stos(Username_textbox->Text);
 		std::string pass = Stos(Password_textbox->Text);

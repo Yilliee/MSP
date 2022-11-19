@@ -239,7 +239,6 @@ namespace MSP {
 			this->Controls->Add(this->Logout_button);
 			this->Name = L"Admin";
 			this->Text = L"Admin";
-			this->Load += gcnew System::EventHandler(this, &Admin::Admin_Load);
 			this->ResumeLayout(false);
 
 		} // Admin_homepage - end
@@ -1226,12 +1225,6 @@ namespace MSP {
 	// Save functions - end
 	
 	// Functions - Admin_homepage
-	private: System::Void Admin_Load(System::Object^ sender, System::EventArgs^ e) {
-		for (int i = 0; i < saved.sections; i++) {
-			std::ifstream sub_file(Subject_Folder + "Sec_" + Sec_list[i] + ".txt");
-			ReadSubjects(sub_file, subjects_details[i], Max_Subjects);
-		}
-	}
 	private: System::Void Stu_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = STU;
 		this->Hide();
