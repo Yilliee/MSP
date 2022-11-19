@@ -1239,11 +1239,6 @@ namespace MSP {
 	private: void Teacher_Load(void) {
 		int button_no = 0;
 		this->Teacher_hp_header->Text += stoS(Teach_Cred[teach_no].name + "!");
-		
-		for (int i = 0; i < saved.sections; i++) {
-			std::ifstream sub_file(Subject_Folder + "Sec_" + Sec_list[i] + ".txt");
-			ReadSubjects(sub_file, subjects_details[i], Max_Subjects);
-		}
 
 		for (int i = 0; i < saved.sections; i++) {
 			for (int j = 0; j < Max_Subjects; j++) {
@@ -1469,9 +1464,6 @@ namespace MSP {
 
 	// Attendance - functions - start
 	private: void load_att(void) {
-		ifstream att_file(Attendance_Folder + "Sec_" + Sec_list[curr_sec] + ".txt");
-		ReadAttendence(att_file, Student_att[curr_sec], Max_Students, Max_Subjects, Max_Weeks);
-		att_file.close();
 		for (int i = 0; i < Max_Students; i++) {
 			this->ID_att_l[i]->Text = stoS(Student_att[curr_sec][i].id);
 			this->Name_att_l[i]->Text = stoS(Student_att[curr_sec][i].name);
