@@ -40,9 +40,16 @@ namespace MSP {
 	private: Label^ Admin_hp_header;
 	private: Button^ Stu_button;
 	private: Button^ Teach_button;
+	private: Button^ Admin_button;
 	private: Button^ Sub_button;
 	private: Button^ SubAllot_button;
 	private: Button^ Logout_button;
+	
+	private: Form^ New_Pass_prompt = gcnew Form();
+	private: Label^ New_pass_message_label = gcnew Label();
+	private: TextBox^ New_Pass_tb = gcnew TextBox();
+	private: TextBox^ New_Pass_Confirmation_tb = gcnew TextBox();
+	private: Button^ New_pass_update_button = gcnew Button();
 	// Admin_homepage - items - end
 	
 	// Section_manager - items - start
@@ -84,7 +91,7 @@ namespace MSP {
 	private: array<Label^>^ Sr_SubAllot_l = gcnew array<Label^>(Max_Teachers);
 	private: array<Label^>^ ID_SubAllot_l = gcnew array<Label^>(Max_Teachers);
 	private: array<Label^>^ Name_SubAllot_l = gcnew array<Label^>(Max_Teachers);
-	private: array<ComboBox^>^ Subject_SubAllot_cb = gcnew array<ComboBox^>(Max_Teachers * Max_subject_per_teacher);
+	private: array<array<ComboBox^>^>^ Subject_SubAllot_cb;
 	// Subject allotment - items - end
 
 	// Subjects_manager - items - start
@@ -106,31 +113,14 @@ namespace MSP {
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
-		// Section_manager
-		void load_buttons(int sec) {
-			for (int i = 0; i < Max_Sections; i++) {
-				if (sec > i) this->Section[i]->Visible = true;
-				else this->Section[i]->Visible = false;
-
-				if (mode != SUBJECTS) {
-					if (sec == 1) this->Sec_del_button->Visible = false;
-					else this->Sec_del_button->Visible = true;
-				
-					if (sec == Max_Sections) this->New_Sec_button->Visible = false;
-					else this->New_Sec_button->Visible = true;
-				}
-			}
-
-
-		}
-		// Section_manager - end
-
 		// Admin homepage
 		void InitializeComponent(void)
 		{
+			int tab_index = 0;
 			this->Admin_hp_header = (gcnew Label());
 			this->Stu_button = (gcnew Button());
 			this->Teach_button = (gcnew Button());
+			this->Admin_button = (gcnew Button());
 			this->Sub_button = (gcnew Button());
 			this->SubAllot_button = (gcnew Button());
 			this->Logout_button = (gcnew Button());
@@ -143,11 +133,13 @@ namespace MSP {
 			this->Admin_hp_header->Anchor = AnchorStyles::Top;
 			this->Admin_hp_header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Admin_hp_header->Location = System::Drawing::Point(9, 39);
+			this->Admin_hp_header->Location = System::Drawing::Point(10, 40);
 			this->Admin_hp_header->Name = L"Admin_hp_header";
-			this->Admin_hp_header->Size = System::Drawing::Size(701, 31);
-			this->Admin_hp_header->TabIndex = 0;
-			this->Admin_hp_header->Text = stoS("Welcome, " + Admin_Cred[admin_no].name);
+			this->Admin_hp_header->Size = System::Drawing::Size(700, 30);
+			if (!No_Admin_Cred_available)
+				this->Admin_hp_header->Text = stoS("Welcome, " + Admin_Cred[admin_no].name);
+			else
+				this->Admin_hp_header->Text = L"Default Admin Account";
 			this->Admin_hp_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Stu_button
@@ -157,10 +149,10 @@ namespace MSP {
 			this->Stu_button->FlatStyle = FlatStyle::Popup;
 			this->Stu_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Stu_button->Location = System::Drawing::Point(248, 120);
+			this->Stu_button->Location = System::Drawing::Point(250, 120);
 			this->Stu_button->Name = L"Stu_button";
-			this->Stu_button->Size = System::Drawing::Size(229, 31);
-			this->Stu_button->TabIndex = 1;
+			this->Stu_button->Size = System::Drawing::Size(220, 30);
+			this->Stu_button->TabIndex = tab_index++;
 			this->Stu_button->Text = L"Manage Students";
 			this->Stu_button->UseVisualStyleBackColor = false;
 			this->Stu_button->Click += gcnew System::EventHandler(this, &Admin::Stu_button_Click);
@@ -172,13 +164,31 @@ namespace MSP {
 			this->Teach_button->FlatStyle = FlatStyle::Popup;
 			this->Teach_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Teach_button->Location = System::Drawing::Point(248, 166);
+			this->Teach_button->Location = System::Drawing::Point(250, 160);
 			this->Teach_button->Name = L"Teach_button";
-			this->Teach_button->Size = System::Drawing::Size(229, 31);
-			this->Teach_button->TabIndex = 2;
+			this->Teach_button->Size = System::Drawing::Size(220, 30);
+			this->Teach_button->TabIndex = tab_index++;
 			this->Teach_button->Text = L"Manage Teachers";
 			this->Teach_button->UseVisualStyleBackColor = false;
 			this->Teach_button->Click += gcnew System::EventHandler(this, &Admin::Teach_button_Click);
+			// 
+			// Admin_button
+			// 
+			this->Admin_button->Anchor = AnchorStyles::Top;
+			this->Admin_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Admin_button->FlatStyle = FlatStyle::Popup;
+			this->Admin_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Admin_button->Location = System::Drawing::Point(250, 200);
+			this->Admin_button->Name = L"Admin_button";
+			this->Admin_button->Size = System::Drawing::Size(220, 30);
+			this->Admin_button->TabIndex = tab_index++;
+			if (No_Admin_Cred_available)
+				this->Admin_button->Text = L"Manage Admins";
+			else 
+				this->Admin_button->Text = L"Reset password";
+			this->Admin_button->UseVisualStyleBackColor = false;
+			this->Admin_button->Click += gcnew System::EventHandler(this, &Admin::Admin_button_Click);
 			// 
 			// Sub_button
 			// 
@@ -187,28 +197,13 @@ namespace MSP {
 			this->Sub_button->FlatStyle = FlatStyle::Popup;
 			this->Sub_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Sub_button->Location = System::Drawing::Point(248, 212);
+			this->Sub_button->Location = System::Drawing::Point(250, 240);
 			this->Sub_button->Name = L"Sub_button";
-			this->Sub_button->Size = System::Drawing::Size(229, 31);
-			this->Sub_button->TabIndex = 3;
+			this->Sub_button->Size = System::Drawing::Size(220, 30);
+			this->Sub_button->TabIndex = tab_index++;
 			this->Sub_button->Text = L"Manage Subjects";
 			this->Sub_button->UseVisualStyleBackColor = false;
 			this->Sub_button->Click += gcnew System::EventHandler(this, &Admin::Sub_button_Click);
-			// 
-			// Logout_button
-			// 
-			this->Logout_button->Anchor = AnchorStyles::Top;
-			this->Logout_button->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->Logout_button->FlatStyle = FlatStyle::Popup;
-			this->Logout_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->Logout_button->Location = System::Drawing::Point(248, 303);
-			this->Logout_button->Name = L"Logout_button";
-			this->Logout_button->Size = System::Drawing::Size(229, 31);
-			this->Logout_button->TabIndex = 5;
-			this->Logout_button->Text = L"Logout";
-			this->Logout_button->UseVisualStyleBackColor = false;
-			this->Logout_button->Click += gcnew System::EventHandler(this, &Admin::Logout_button_Click);
 			// 
 			// SubAllot_button
 			// 
@@ -217,28 +212,44 @@ namespace MSP {
 			this->SubAllot_button->FlatStyle = FlatStyle::Popup;
 			this->SubAllot_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->SubAllot_button->Location = System::Drawing::Point(248, 258);
+			this->SubAllot_button->Location = System::Drawing::Point(250, 280);
 			this->SubAllot_button->Name = L"SubAllot_button";
-			this->SubAllot_button->Size = System::Drawing::Size(229, 31);
-			this->SubAllot_button->TabIndex = 4;
+			this->SubAllot_button->Size = System::Drawing::Size(220, 30);
+			this->SubAllot_button->TabIndex = tab_index++;
 			this->SubAllot_button->Text = L"Subject Allotment";
 			this->SubAllot_button->UseVisualStyleBackColor = false;
 			this->SubAllot_button->Click += gcnew System::EventHandler(this, &Admin::SubAllot_button_Click);
-
+			// 
+			// Logout_button
+			// 
+			this->Logout_button->Anchor = AnchorStyles::Top;
+			this->Logout_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Logout_button->FlatStyle = FlatStyle::Popup;
+			this->Logout_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Logout_button->Location = System::Drawing::Point(250, 320);
+			this->Logout_button->Name = L"Logout_button";
+			this->Logout_button->Size = System::Drawing::Size(220, 30);
+			this->Logout_button->TabIndex = tab_index++;
+			this->Logout_button->Text = L"Logout";
+			this->Logout_button->UseVisualStyleBackColor = false;
+			this->Logout_button->Click += gcnew System::EventHandler(this, &Admin::Logout_button_Click);
+			
 			// 
 			// Admin
 			// 
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
-			this->ClientSize = System::Drawing::Size(719, 363);
+			this->ClientSize = System::Drawing::Size(720, 450);
 			this->Controls->Add(this->Admin_hp_header);
 			this->Controls->Add(this->Stu_button);
 			this->Controls->Add(this->Teach_button);
+			this->Controls->Add(this->Admin_button);
 			this->Controls->Add(this->Sub_button);
 			this->Controls->Add(this->SubAllot_button);
 			this->Controls->Add(this->Logout_button);
 			this->Name = L"Admin";
-			this->Text = L"Admin";
+			this->Text = L"Homepage";
 			this->ResumeLayout(false);
 
 		} // Admin_homepage - end
@@ -274,16 +285,16 @@ namespace MSP {
 			// 
 			int y_pos = 90, tab_index = 1;
 			for (int i = 0; i < Max_Sections; i++) {
-				this->Section[i]->Anchor = AnchorStyles::Top; //static_cast<AnchorStyles>(AnchorStyles::Top);// | AnchorStyles::Right | AnchorStyles::Left);
+				this->Section[i]->Anchor = AnchorStyles::Top;
 				this->Section[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Section[i]->FlatStyle = FlatStyle::Popup;
 				this->Section[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
 				this->Section[i]->Location = System::Drawing::Point(225, y_pos);
-				this->Section[i]->Name = stoS(Stos("Sec ") + Sec_list[i] + "_button");
+				this->Section[i]->Name = stoS(string("Sec ") + Sec_list[i] + "_button");
 				this->Section[i]->Size = System::Drawing::Size(200, 25);
 				this->Section[i]->TabIndex = tab_index++;
-				this->Section[i]->Text = stoS(Stos("Section ") + Sec_list[i]);
+				this->Section[i]->Text = stoS(string("Section ") + Sec_list[i]);
 				this->Section[i]->UseVisualStyleBackColor = false;
 				this->Section[i]->Tag = i;
 				this->Section[i]->Click += gcnew System::EventHandler(this, &Admin::Select_Section);
@@ -294,7 +305,7 @@ namespace MSP {
 			// 
 			// Sec_del_button
 			// 
-			this->Sec_del_button->Anchor = AnchorStyles::Top; //static_cast<AnchorStyles>(AnchorStyles::Top);// | AnchorStyles::Right | AnchorStyles::Left);
+			this->Sec_del_button->Anchor = AnchorStyles::Top;
 			this->Sec_del_button->BackColor = System::Drawing::Color::Red;
 			this->Sec_del_button->FlatStyle = FlatStyle::Popup;
 			this->Sec_del_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -312,7 +323,7 @@ namespace MSP {
 			// 
 			// New_Sec_button
 			//
-			this->New_Sec_button->Anchor = AnchorStyles::Top; //static_cast<AnchorStyles>(AnchorStyles::Top);// | AnchorStyles::Right | AnchorStyles::Left);
+			this->New_Sec_button->Anchor = AnchorStyles::Top;
 			this->New_Sec_button->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->New_Sec_button->FlatStyle = FlatStyle::Popup;
 			this->New_Sec_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -329,7 +340,7 @@ namespace MSP {
 			// 
 			// Back_to_home_button
 			// 
-			this->Back_from_Sec_button->Anchor = AnchorStyles::Top;//static_cast<AnchorStyles>(AnchorStyles::Top);// | AnchorStyles::Right | AnchorStyles::Left);
+			this->Back_from_Sec_button->Anchor = AnchorStyles::Top;
 			this->Back_from_Sec_button->BackColor = System::Drawing::Color::Lavender;
 			this->Back_from_Sec_button->FlatStyle = FlatStyle::Popup;
 			this->Back_from_Sec_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -369,7 +380,7 @@ namespace MSP {
 			this->PerformLayout();
 
 		}
-		// InitializeComponent_Section_manager - end
+		// Section Manager - end
 
 		// Credentials Manager
 		void InitializeComponent_CredentialsManager(void)
@@ -407,18 +418,21 @@ namespace MSP {
 			this->Mgmt_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->Mgmt_header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Mgmt_header->Location = System::Drawing::Point(247, 20);
+			this->Mgmt_header->Location = System::Drawing::Point(35, 20);
 			this->Mgmt_header->Name = L"Mgmt_header";
-			this->Mgmt_header->Size = System::Drawing::Size(195, 31);
-			this->Mgmt_header->TabIndex = 0;
+			this->Mgmt_header->Size = System::Drawing::Size(700, 31);
+			this->Mgmt_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			if (mode == STU)
-				this->Mgmt_header->Text = L"Student Details";
+				this->Mgmt_header->Text = L"Student Credentials";
 			else if (mode == TEACH)
-				this->Mgmt_header->Text = L"Teach Details";
+				this->Mgmt_header->Text = L"Teacher Credentials";
+			else if (mode == ADMIN)
+				this->Mgmt_header->Text = L"Admin Credentials";
+
 			// 
 			// Save_button
 			//
-			this->Save_button_Cred->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Save_button_Cred->Anchor = static_cast<AnchorStyles>(AnchorStyles::Right | AnchorStyles::Top);
 			this->Save_button_Cred->BackColor = System::Drawing::Color::Lavender;
 			this->Save_button_Cred->FlatStyle = FlatStyle::Popup;
 			this->Save_button_Cred->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -433,7 +447,7 @@ namespace MSP {
 			// 
 			// Back_from_cred_button
 			//
-			this->Back_from_Cred_button->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Back_from_Cred_button->Anchor = AnchorStyles::Top;
 			this->Back_from_Cred_button->BackColor = System::Drawing::Color::Lavender;
 			this->Back_from_Cred_button->FlatStyle = FlatStyle::Popup;
 			this->Back_from_Cred_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -444,14 +458,14 @@ namespace MSP {
 			this->Back_from_Cred_button->TabIndex = 1;
 			this->Back_from_Cred_button->Text = L"Back";
 			this->Back_from_Cred_button->UseVisualStyleBackColor = false;
-			if (mode == TEACH)
+			if (mode == TEACH || mode == ADMIN)
 				this->Back_from_Cred_button->Click += gcnew System::EventHandler(this, &Admin::back_to_homepage);
 			else if (mode == STU)
 				this->Back_from_Cred_button->Click += gcnew System::EventHandler(this, &Admin::back_to_section_manager);
 			// 
 			// Sr_header
 			// 
-			this->Sr_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Sr_header->Anchor = AnchorStyles::Top;
 			this->Sr_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Sr_header->FlatStyle = FlatStyle::Popup;
 			this->Sr_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -466,7 +480,7 @@ namespace MSP {
 			// 
 			// ID_header
 			// 
-			this->ID_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->ID_header->Anchor = AnchorStyles::Top;
 			this->ID_header->BorderStyle = BorderStyle::FixedSingle;
 			this->ID_header->FlatStyle = FlatStyle::Popup;
 			this->ID_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -480,7 +494,7 @@ namespace MSP {
 			// 
 			// Name_header
 			// 
-			this->Name_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Name_header->Anchor = AnchorStyles::Top;
 			this->Name_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Name_header->FlatStyle = FlatStyle::Popup;
 			this->Name_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -493,12 +507,14 @@ namespace MSP {
 				this->Name_header->Text = L"Student Name";
 			else if (mode == TEACH)
 				this->Name_header->Text = L"Teacher Name";
+			else if (mode == ADMIN)
+				this->Name_header->Text = L"Admin Name";
 			this->Name_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 			// 
 			// Email_header
 			// 
-			this->Email_Cred_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Email_Cred_header->Anchor = AnchorStyles::Top;
 			this->Email_Cred_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Email_Cred_header->FlatStyle = FlatStyle::Popup;
 			this->Email_Cred_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -512,7 +528,7 @@ namespace MSP {
 			// 
 			// Pass_header
 			// 
-			this->Pass_Cred_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Top | AnchorStyles::Left);
+			this->Pass_Cred_header->Anchor = AnchorStyles::Top;
 			this->Pass_Cred_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Pass_Cred_header->FlatStyle = FlatStyle::Popup;
 			this->Pass_Cred_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -529,7 +545,7 @@ namespace MSP {
 			// 
 			int y_pos = 124, inc = 31, tab_index = 7;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->Sr_Cred_l[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Sr_Cred_l[i]->Anchor = AnchorStyles::Top;
 				this->Sr_Cred_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
 				this->Sr_Cred_l[i]->Location = System::Drawing::Point(5, y_pos);
@@ -546,7 +562,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 8;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->ID_Cred_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->ID_Cred_tb[i]->Anchor = AnchorStyles::Top;
 				this->ID_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->ID_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -563,7 +579,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 9;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->Name_Cred_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Name_Cred_tb[i]->Anchor = AnchorStyles::Top;
 				this->Name_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Name_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -580,7 +596,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 10;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->Email_Cred_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Top | AnchorStyles::Left);
+				this->Email_Cred_tb[i]->Anchor = AnchorStyles::Top;
 				this->Email_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Email_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -597,7 +613,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 11;
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->Pass_Cred_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Pass_Cred_tb[i]->Anchor = AnchorStyles::Top;
 				this->Pass_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Pass_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -614,6 +630,7 @@ namespace MSP {
 			// Credential_management
 			// 
 			this->AutoScroll = true;
+			this->AcceptButton = this->Save_button_Cred;
 			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->ClientSize = System::Drawing::Size(780, 450);
 			this->Controls->Add(this->Mgmt_header);
@@ -637,9 +654,9 @@ namespace MSP {
 				this->Name = L"Teacher_management";
 				this->Text = L"Teacher management";
 			}
-			else if (mode == SUBJECTS) {
-				this->Name = L"Subjects_management";
-				this->Text = L"Subjects management";
+			else if (mode == ADMIN) {
+				this->Name = L"admin_management";
+				this->Text = L"Admin management";
 			}
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -668,9 +685,11 @@ namespace MSP {
 				this->Name_SubAllot_l[i] = (gcnew Label());
 			}
 
+			this->Subject_SubAllot_cb = gcnew array<array<ComboBox^>^>(Max_Teachers);
 			for (int i = 0; i < Max_Teachers; i++) {
+				this->Subject_SubAllot_cb[i] = gcnew array<ComboBox^>(Max_subject_per_teacher);
 				for (int j = 0; j < Max_subject_per_teacher; j++) {
-					this->Subject_SubAllot_cb[i * Max_subject_per_teacher + j] = (gcnew ComboBox());
+					this->Subject_SubAllot_cb[i][j] = (gcnew ComboBox());
 				}
 			}
 
@@ -724,7 +743,7 @@ namespace MSP {
 			//
 			// Sr header
 			// 
-			this->Sr_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Sr_header->Anchor = AnchorStyles::Top;
 			this->Sr_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Sr_header->FlatStyle = FlatStyle::Popup;
 			this->Sr_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -738,7 +757,7 @@ namespace MSP {
 			//
 			// ID header
 			// 
-			this->ID_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->ID_header->Anchor = AnchorStyles::Top;
 			this->ID_header->BorderStyle = BorderStyle::FixedSingle;
 			this->ID_header->FlatStyle = FlatStyle::Popup;
 			this->ID_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -752,7 +771,7 @@ namespace MSP {
 			// 
 			// Name header
 			// 
-			this->Name_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Name_header->Anchor = AnchorStyles::Top;
 			this->Name_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Name_header->FlatStyle = FlatStyle::Popup;
 			this->Name_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -768,7 +787,7 @@ namespace MSP {
 			// 
 			int x_pos_sub = this->Name_header->Left + this->Name_header->Width + 5, tab_index = 5;
 			for (int i = 0; i < Max_subject_per_teacher; i++) {
-				this->Subject_SubAllot_header[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Subject_SubAllot_header[i]->Anchor = AnchorStyles::Top;
 				this->Subject_SubAllot_header[i]->BorderStyle = BorderStyle::FixedSingle;
 				this->Subject_SubAllot_header[i]->FlatStyle = FlatStyle::Popup;
 				this->Subject_SubAllot_header[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -789,7 +808,7 @@ namespace MSP {
 			int y_pos = 124;
 			tab_index = 5 + Max_subject_per_teacher;
 			for (int i = 0; i < Max_Teachers; i++) {
-				this->Sr_SubAllot_l[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Sr_SubAllot_l[i]->Anchor = AnchorStyles::Top;
 				this->Sr_SubAllot_l[i]->BorderStyle = BorderStyle::FixedSingle;
 				this->Sr_SubAllot_l[i]->FlatStyle = FlatStyle::Popup;
 				this->Sr_SubAllot_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -808,7 +827,7 @@ namespace MSP {
 			//
 			y_pos = 124, tab_index = 6 + Max_subject_per_teacher;
 			for (int i = 0; i < Max_Teachers; i++) {
-				this->ID_SubAllot_l[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->ID_SubAllot_l[i]->Anchor = AnchorStyles::Top;
 				this->ID_SubAllot_l[i]->BorderStyle = BorderStyle::FixedSingle;
 				this->ID_SubAllot_l[i]->FlatStyle = FlatStyle::Popup;
 				this->ID_SubAllot_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -826,7 +845,7 @@ namespace MSP {
 			//
 			y_pos = 124, tab_index = 7 + Max_subject_per_teacher;
 			for (int i = 0; i < Max_Teachers; i++) {
-				this->Name_SubAllot_l[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Name_SubAllot_l[i]->Anchor = AnchorStyles::Top;
 				this->Name_SubAllot_l[i]->BorderStyle = BorderStyle::FixedSingle;
 				this->Name_SubAllot_l[i]->FlatStyle = FlatStyle::Popup;
 				this->Name_SubAllot_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -846,21 +865,21 @@ namespace MSP {
 			for (int i = 0; i < Max_Teachers; i++) {
 				int x_pos_cb = this->Name_SubAllot_l[i]->Right + 5;
 				for (int j = 0; j < Max_subject_per_teacher; j++) {
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->BackColor = System::Drawing::Color::WhiteSmoke;
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					this->Subject_SubAllot_cb[i][j]->Anchor = AnchorStyles::Top;
+					this->Subject_SubAllot_cb[i][j]->BackColor = System::Drawing::Color::WhiteSmoke;
+					this->Subject_SubAllot_cb[i][j]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->DropDownStyle = ComboBoxStyle::DropDownList;
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Location = System::Drawing::Point(x_pos_cb, y_pos);
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Name = stoS("Week_" + std::to_string(i + 1) + "_lec1_h");
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Size = System::Drawing::Size(200, this->ID_SubAllot_l[i]->Height);
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->TabIndex = tab_index;
-					this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->SelectedIndexChanged += gcnew System::EventHandler(this, &Admin::ComboBox_value_changed);;
-					x_pos_cb += this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Width + 5;
+					this->Subject_SubAllot_cb[i][j]->DropDownStyle = ComboBoxStyle::DropDownList;
+					this->Subject_SubAllot_cb[i][j]->Location = System::Drawing::Point(x_pos_cb, y_pos);
+					this->Subject_SubAllot_cb[i][j]->Name = stoS("Week_" + std::to_string(i + 1) + "_lec1_h");
+					this->Subject_SubAllot_cb[i][j]->Size = System::Drawing::Size(200, this->ID_SubAllot_l[i]->Height);
+					this->Subject_SubAllot_cb[i][j]->TabIndex = tab_index;
+					this->Subject_SubAllot_cb[i][j]->SelectedIndexChanged += gcnew System::EventHandler(this, &Admin::ComboBox_value_changed);;
+					x_pos_cb += this->Subject_SubAllot_cb[i][j]->Width + 5;
 					tab_index++;
 				}
 				tab_index += 3;
-				y_pos += this->Subject_SubAllot_cb[i * Max_subject_per_teacher]->Height + 6; // The first entry in the current line
+				y_pos += this->Subject_SubAllot_cb[i][0]->Height + 6; // The first entry in the current line
 			}
 
 			// 
@@ -879,17 +898,18 @@ namespace MSP {
 			this->Controls->AddRange(this->Sr_SubAllot_l);
 			this->Controls->AddRange(this->ID_SubAllot_l);
 			this->Controls->AddRange(this->Name_SubAllot_l);
-			this->Controls->AddRange(this->Subject_SubAllot_cb);
-
+			for ( int i = 0; i < Max_Teachers; i++)
+				this->Controls->AddRange(this->Subject_SubAllot_cb[i]);
 
 			this->Name = L"Subject_allotment";
-			this->Text = L"Subject_allotment";
+			this->Text = L"Subject Allotment";
 			Subject_allotment_Load();
 			this->ResumeLayout(false);
 
 		}
 		// Subject allotment - end
 
+		// Subject management
 		void InitializeComponent_SubjectManager(void)
 		{
 			for (int i = 0; i < Max_Subjects; i++) {
@@ -912,7 +932,7 @@ namespace MSP {
 			// 
 			// Subject_mgmt_header
 			// 
-			this->SubMgr_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->SubMgr_header->Anchor = AnchorStyles::Top;
 			this->SubMgr_header->BorderStyle = BorderStyle::FixedSingle;
 			this->SubMgr_header->FlatStyle = FlatStyle::Popup;
 			this->SubMgr_header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -927,7 +947,7 @@ namespace MSP {
 			// 
 			// Save_button
 			//
-			this->Save_button_SubMgr->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Save_button_SubMgr->Anchor = static_cast<AnchorStyles>(AnchorStyles::Right | AnchorStyles::Top);
 			this->Save_button_SubMgr->BackColor = System::Drawing::Color::Lavender;
 			this->Save_button_SubMgr->FlatStyle = FlatStyle::Popup;
 			this->Save_button_SubMgr->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -958,7 +978,7 @@ namespace MSP {
 			// 
 			// Sr_header
 			// 
-			this->Sr_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Sr_header->Anchor =  AnchorStyles::Top;
 			this->Sr_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Sr_header->FlatStyle = FlatStyle::Popup;
 			this->Sr_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -972,7 +992,7 @@ namespace MSP {
 			//
 			// ID_header (Course Code)
 			// 
-			this->ID_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->ID_header->Anchor = AnchorStyles::Top;
 			this->ID_header->BorderStyle = BorderStyle::FixedSingle;
 			this->ID_header->FlatStyle = FlatStyle::Popup;
 			this->ID_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -986,7 +1006,7 @@ namespace MSP {
 			//
 			// (Subject_)Name_header
 			// 
-			this->Name_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->Name_header->Anchor = AnchorStyles::Top;
 			this->Name_header->BorderStyle = BorderStyle::FixedSingle;
 			this->Name_header->FlatStyle = FlatStyle::Popup;
 			this->Name_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -1000,7 +1020,7 @@ namespace MSP {
 			//
 			// Grading_system_h
 			// 
-			this->GradingSystem_SubMgr_header->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+			this->GradingSystem_SubMgr_header->Anchor = AnchorStyles::Top;
 			this->GradingSystem_SubMgr_header->BorderStyle = BorderStyle::FixedSingle;
 			this->GradingSystem_SubMgr_header->FlatStyle = FlatStyle::Popup;
 			this->GradingSystem_SubMgr_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -1017,7 +1037,7 @@ namespace MSP {
 			// 
 			int y_pos = 124, inc = 31, tab_index = 6;
 			for (int i = 0; i < Max_Subjects; i++) {
-				this->Sr_SubMgr_l[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Sr_SubMgr_l[i]->Anchor = AnchorStyles::Top;
 				this->Sr_SubMgr_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
 				this->Sr_SubMgr_l[i]->Location = System::Drawing::Point(5, y_pos);
@@ -1034,7 +1054,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 7;
 			for (int i = 0; i < Max_Subjects; i++) {
-				this->CourseCode_SubMgr_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->CourseCode_SubMgr_tb[i]->Anchor = AnchorStyles::Top;
 				this->CourseCode_SubMgr_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->CourseCode_SubMgr_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -1051,7 +1071,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 8;
 			for (int i = 0; i < Max_Subjects; i++) {
-				this->Subject_SubMgr_tb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->Subject_SubMgr_tb[i]->Anchor = AnchorStyles::Top;
 				this->Subject_SubMgr_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Subject_SubMgr_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -1068,7 +1088,7 @@ namespace MSP {
 			//
 			y_pos = 124, inc = 31, tab_index = 9;
 			for (int i = 0; i < Max_Subjects; i++) {
-				this->GradingSystem_SubMgr_cb[i]->Anchor = static_cast<AnchorStyles>(AnchorStyles::Left | AnchorStyles::Top);
+				this->GradingSystem_SubMgr_cb[i]->Anchor = AnchorStyles::Top;
 				this->GradingSystem_SubMgr_cb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->GradingSystem_SubMgr_cb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
@@ -1110,6 +1130,7 @@ namespace MSP {
 			this->ResumeLayout(false);
 
 		}
+		// Subject management - end
 
 	// Back functions
 	private: System::Void back_to_homepage(System::Object^ sender, System::EventArgs^ e) {
@@ -1125,6 +1146,7 @@ namespace MSP {
 		this->Show();
 	}
 	// Back functions - end
+	
 	// Save functions
 	private: System::Void Save_button_Cred_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -1133,9 +1155,14 @@ namespace MSP {
 			Cred = &Stu_Cred[curr_sec][0];
 		else if (mode == TEACH)
 			Cred = &Teach_Cred[0];
-
+		else if (mode == ADMIN)
+			Cred = &Admin_Cred[0];
 
 		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+			if (this->Pass_Cred_tb[i]->TextLength < 4) {
+				MessageBox::Show("Passwords should be atleast 4 characters each. Aborting the saving process...\nFirst offending entry : Sr." + i.ToString());
+				return;
+			}
 			Cred[i].id = Stos(this->ID_Cred_tb[i]->Text);
 			Cred[i].name = Stos(this->Name_Cred_tb[i]->Text);
 			Cred[i].username = Stos(this->Email_Cred_tb[i]->Text);
@@ -1149,22 +1176,17 @@ namespace MSP {
 		}
 		
 		if (mode == STU) {
-			std::ofstream stu(Student_Cred_Folder + "Sec_" + Sec_list[curr_sec] + ".txt");
-			WriteCredentials(stu, Stu_Cred[curr_sec], Max_Students);
-			stu.close();
+			WriteCredentials(Student_Cred_Folder, string("Sec_") + Sec_list[curr_sec] + ".txt", Stu_Cred[curr_sec], Max_Students);
 
-			stu.open(Marks_Folder + "Sec_" + Sec_list[curr_sec] + ".txt");
-			WriteMarks(stu, Student_marks[curr_sec], Max_Students, subjects_details[curr_sec][curr_subject], Max_Subjects, Max_Quizzes, Max_Assignments);
-			stu.close();
+			WriteMarks(Marks_Folder, string("Sec_") + Sec_list[curr_sec] + ".txt", Student_marks[curr_sec], Max_Students, subjects_details[curr_sec][curr_subject], Max_Subjects, Max_Quizzes, Max_Assignments);
 
-			stu.open(Attendance_Folder + "Sec_" + Sec_list[curr_sec] + ".txt");
-			WriteAttendence(stu, Student_att[curr_sec], Max_Students, Max_Subjects, Max_Weeks);
-			stu.close();
+			WriteAttendence(Attendance_Folder, string("Sec_") + Sec_list[curr_sec] + ".txt", Student_att[curr_sec], Max_Students, Max_Subjects, Max_Weeks, Lec_per_Week);
 		}
 		else if (mode == TEACH) {
-			std::ofstream Teach(Teacher_Cred_File);
-			WriteCredentials(Teach, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
-			Teach.close();
+			WriteCredentials(Cred_Folder, Teacher_Cred_File, Teach_Cred, Max_Teachers);
+		}
+		else if (mode == ADMIN) {
+			WriteCredentials(Cred_Folder, Admin_Cred_File, Admin_Cred, Max_Admins);
 		}
 
 		MessageBox::Show("Credentials Updated Successfully !");
@@ -1173,18 +1195,17 @@ namespace MSP {
 		for (int i = 0; i < Max_Teachers; i++) {
 			for (int j = 0; j < Max_subject_per_teacher; j++) {
 				// If the current ComboBox is selected:
-				if (Subject_SubAllot_cb[i * Max_subject_per_teacher + j]->SelectedIndex != -1) {
-					std::string course_and_section = Stos(Subject_SubAllot_cb[i * Max_subject_per_teacher + j]->SelectedItem->ToString());
+				if (Subject_SubAllot_cb[i][j]->SelectedIndex > 0) {
+					std::string course_and_section = Stos(Subject_SubAllot_cb[i][j]->SelectedItem->ToString());
 					int section = -1, course = -1;
 					for (int i = 0; i < saved.sections; i++) {
 						// If the current section is the one which is present in the selected option of the ComboBox then store it
-						if (course_and_section.find(Stos("Section ") + Sec_list[i]) != -1) {
+						if (course_and_section.find(string("Section ") + Sec_list[i]) != -1) {
 							section = i;
 							break;
 						}
 					}
-					if (section == -1) // Handle the error if any
-						MessageBox::Show("Selection : " + stoS(course_and_section) + " - section is -1");
+					
 					for (int i = 0; i < Max_Subjects; i++) {
 						// If the current section is the one which is present in the selected option of the ComboBox then store it
 						if (course_and_section.find(subjects_details[section][i].course_code) != -1) {
@@ -1192,8 +1213,7 @@ namespace MSP {
 							break;
 						}
 					}
-					if (course == -1) // Handle the error if any
-						MessageBox::Show("Selection : " + stoS(course_and_section) + " - Section: " + Sec_list[section] + " - Course is -1");
+					
 					// If we have gotten both the section and subject indexes, then update the teacher no.
 					subjects_details[section][course].teach_no = i;
 				}
@@ -1201,9 +1221,16 @@ namespace MSP {
 		} // End inner - for (int i = 0; i < Max_Teachers; i++)
 
 		// Update the Subject data in files
-		for (int i = 0; i < saved.sections; i++) {
-			std::ofstream sub_file(Subject_Folder + "Sec_" + Sec_list[i] + ".txt");
-			WriteSubjects(sub_file, subjects_details[i], Max_Subjects);
+		for (int i = 0; i < saved.sections; i++){
+			bool all_empty = true;
+			for ( int j = 0; j < Max_Subjects; j++ ){
+				if ( ! subjects_details[i][j].course_code.empty() &&  ! subjects_details[i][j].name.empty() ) {
+					all_empty = false;
+					break;
+				}
+			}
+			if ( ! all_empty )
+				WriteSubjects(Subject_Folder, string("Sec_") + Sec_list[i] + ".txt", subjects_details[i], Max_Subjects);
 		}
 
 		MessageBox::Show("Subject allotment updated successfully !");
@@ -1215,16 +1242,26 @@ namespace MSP {
 			subjects_details[curr_sec][i].grading = Stos(this->GradingSystem_SubMgr_cb[i]->SelectedItem->ToString());
 		}
 
-		for (int i = 0; i < saved.sections; i++) {
-			std::ofstream sub_file(Subject_Folder + "Sec_" + Sec_list[i] + ".txt");
-			WriteSubjects(sub_file, subjects_details[i], Max_Subjects);
-		}
+		WriteSubjects(Subject_Folder, string("Sec_") + Sec_list[curr_sec] + ".txt", subjects_details[curr_sec], Max_Subjects);
 
 		MessageBox::Show("Subject data updated successfully !");
 	}
 	// Save functions - end
 	
 	// Functions - Admin_homepage
+	private: System::Void Update_admin_creds(System::Object^ sender, System::EventArgs^ e) {
+		if (this->New_Pass_tb->Text == this->New_Pass_Confirmation_tb->Text && (this->New_Pass_tb->TextLength >= 4)) {
+			Admin_Cred[admin_no].pass = Stos(this->New_Pass_tb->Text);
+
+			WriteCredentials(Cred_Folder, Admin_Cred_File, Admin_Cred, Max_Admins);
+
+			this->New_Pass_prompt->Close();
+		}
+		else if (this->New_Pass_tb->TextLength < 4)
+			MessageBox::Show("Pasword must be atleast 4 characters!");
+		else if (this->New_Pass_tb->Text != this->New_Pass_Confirmation_tb->Text)
+			MessageBox::Show("Paswords do not match. Please try again!");
+	}
 	private: System::Void Stu_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = STU;
 		this->Hide();
@@ -1235,6 +1272,48 @@ namespace MSP {
 	private: System::Void Teach_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = TEACH;
 		open_cred_winform();
+	}
+	private: System::Void Admin_button_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (No_Admin_Cred_available) {
+			mode = ADMIN;
+			open_cred_winform();
+		}
+		else {
+			this->New_Pass_prompt->Size = System::Drawing::Size(250, 200);
+			this->New_Pass_prompt->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
+			this->New_Pass_prompt->Text = "Reset Password";
+			this->New_Pass_prompt->StartPosition = FormStartPosition::CenterParent;
+			
+			this->New_pass_message_label->Size = System::Drawing::Size(200, 30);
+			this->New_pass_message_label->Location = System::Drawing::Point(25, 10);
+			this->New_pass_message_label->Text = "Enter new password : ";
+			this->New_pass_message_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+			
+			this->New_Pass_tb->Size = System::Drawing::Size(200, 30);;
+			this->New_Pass_tb->Location = System::Drawing::Point(25, 50);
+			this->New_Pass_tb->UseSystemPasswordChar = true;
+			this->New_Pass_tb->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+
+			this->New_Pass_Confirmation_tb->Size = System::Drawing::Size(200, 30);;
+			this->New_Pass_Confirmation_tb->Location = System::Drawing::Point(25, 90);
+			this->New_Pass_Confirmation_tb->UseSystemPasswordChar = true;
+			this->New_Pass_Confirmation_tb->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+
+			this->New_pass_update_button->Text = "Update";
+			this->New_pass_update_button->Location = System::Drawing::Point(175, 120);
+			this->New_pass_update_button->Size = System::Drawing::Size(50, 20);
+			this->New_Pass_prompt->AcceptButton = this->New_pass_update_button;
+			this->New_pass_update_button->Click += gcnew System::EventHandler(this, &MSP::Admin::Update_admin_creds);
+
+			this->New_Pass_prompt->Controls->Add(this->New_pass_message_label);
+			this->New_Pass_prompt->Controls->Add(this->New_Pass_tb);
+			this->New_Pass_prompt->Controls->Add(this->New_Pass_Confirmation_tb);
+			this->New_Pass_prompt->Controls->Add(this->New_pass_update_button);
+			this->New_Pass_prompt->ShowDialog();
+		}
 	}
 	private: System::Void Sub_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		mode = SUBJECTS;
@@ -1257,9 +1336,26 @@ namespace MSP {
 	// Functions - Admin_homepage - end
 
 	// Functions - Section_manager
+	private: void load_buttons(int sec) {
+		for (int i = 0; i < Max_Sections; i++) {
+			if (sec > i) this->Section[i]->Visible = true;
+			else this->Section[i]->Visible = false;
+
+			if (mode != SUBJECTS) {
+				if (sec == 1) this->Sec_del_button->Visible = false;
+				else this->Sec_del_button->Visible = true;
+
+				if (sec == Max_Sections) this->New_Sec_button->Visible = false;
+				else this->New_Sec_button->Visible = true;
+			}
+		}
+
+	}
 	private: System::Void Select_Section(System::Object^ sender, System::EventArgs^ e) {
 		curr_sec = stoi( Stos( static_cast<Control^>(sender)->Tag->ToString() ) );
-		update_settings();
+		
+		WriteSettings(Settings_Folder, Settings_File, saved);
+
 		if (mode == SUBJECTS)
 			open_subject_manager();
 		else
@@ -1278,7 +1374,6 @@ namespace MSP {
 		if ( saved.sections != Max_Sections ) Back_from_Sec_button->Top = New_Sec_button->Top + 35;
 		
 		this->Sec_del_button->BringToFront();
-		//new_sec_button_y += 31;
 		
 	}
 	private: System::Void Delete_a_Section(System::Object^ sender, System::EventArgs^ e) {
@@ -1294,11 +1389,6 @@ namespace MSP {
 
 		
 		this->Sec_del_button->BringToFront();
-	}
-	private: System::Void update_settings(Void) {
-		std::ofstream settings(settings_file);
-		WriteSettings(settings, saved);
-		settings.close();
 	}
 	private: System::Void open_cred_winform(Void) {
 		this->Hide();
@@ -1345,14 +1435,15 @@ namespace MSP {
 		All_classes->Add(" ");
 		for (int i = 0; i < Max_Subjects; i++) {
 			for (int j = 0; j < saved.sections; j++) {
-				All_classes->Add(stoS(Stos("Section ") + Sec_list[j] + " - " + subjects_details[j][i].course_code + " - " + subjects_details[j][i].name));
+				if ( ! subjects_details[j][i].course_code.empty() && ! subjects_details[j][i].name.empty() )
+					All_classes->Add(stoS(string("Section ") + Sec_list[j] + " - " + subjects_details[j][i].course_code + " - " + subjects_details[j][i].name));
 			}
 		}
 
 		// Add all the possible drop-down menu options to each ComboBox seperately.
 		for (int i = 0; i < Max_Teachers; i++) {
 			for (int j = 0; j < Max_subject_per_teacher; j++) {
-				this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Items->AddRange(All_classes->ToArray());
+				this->Subject_SubAllot_cb[i][j]->Items->AddRange(All_classes->ToArray());
 			}
 		}
 
@@ -1361,9 +1452,11 @@ namespace MSP {
 			for (int j = 0; j < Max_Subjects; j++) {
 				int teacher = subjects_details[i][j].teach_no;
 				// Create the string that is part of the ComboBox items from using the subject details struct and set that as the selected item.
-				String^ item = stoS(Stos("Section ") + Sec_list[i] + " - " + subjects_details[i][j].course_code + " - " + subjects_details[i][j].name);
-				this->Subject_SubAllot_cb[teacher * Max_subject_per_teacher + box_no[teacher]]->SelectedItem = item;
-				box_no[teacher]++;
+				if (teacher != -1 && ! subjects_details[i][j].course_code.empty() && ! subjects_details[i][j].name.empty() ){
+					String^ item = stoS(string("Section ") + Sec_list[i] + " - " + subjects_details[i][j].course_code + " - " + subjects_details[i][j].name);
+					this->Subject_SubAllot_cb[teacher][box_no[teacher]]->SelectedItem = item;
+					box_no[teacher]++;
+				}
 			}
 		}
 	}
@@ -1374,7 +1467,8 @@ namespace MSP {
 		// Create a list having all the possible drop-down options
 		for (int i = 0; i < Max_Subjects; i++) {
 			for (int j = 0; j < saved.sections; j++) {
-				Available_classes->Add(stoS(Stos("Section ") + Sec_list[j] + " - " + subjects_details[j][i].course_code + " - " + subjects_details[j][i].name));
+				if ( ! subjects_details[j][i].course_code.empty()  && ! subjects_details[j][i].name.empty() )
+					Available_classes->Add(stoS(string("Section ") + Sec_list[j] + " - " + subjects_details[j][i].course_code + " - " + subjects_details[j][i].name));
 			}
 		}
 
@@ -1386,33 +1480,33 @@ namespace MSP {
 				Selected_classes->AddRange(Available_classes);
 
 				// Store the index of the current combobox
-				int curr_index = (i * Max_subject_per_teacher) + j;
+				int curr_teach = i, curr_sub = j;
 
 				// Remove all those items from Selected_classes list which are present in the item list of the current ComboBox
-				for (int k = 0; k < Subject_SubAllot_cb[curr_index]->Items->Count; k++)
-					Selected_classes->Remove(Subject_SubAllot_cb[curr_index]->Items[k]->ToString());
+				for (int k = 0; k < Subject_SubAllot_cb[curr_teach][curr_sub]->Items->Count; k++)
+					Selected_classes->Remove(Subject_SubAllot_cb[curr_teach][curr_sub]->Items[k]->ToString());
 
 				// From the first ComboBox till the last, recheck for all Selected boxes and remove those selected items from
 				// the selected_classes list.
 				for (int i = 0; i < Max_Teachers; i++) {
 					for (int j = 0; j < Max_subject_per_teacher; j++) {
-						if (Subject_SubAllot_cb[i * Max_subject_per_teacher + j]->SelectedIndex != -1)
-							Selected_classes->Remove(Subject_SubAllot_cb[i * Max_subject_per_teacher + j]->SelectedItem->ToString());
+						if (Subject_SubAllot_cb[i][j]->SelectedIndex != -1)
+							Selected_classes->Remove(Subject_SubAllot_cb[i][j]->SelectedItem->ToString());
 					}
 				}
 
 				// Add all the missing entries i.e. those who haven't been selected in any combobox and are missing from current list.
-				Subject_SubAllot_cb[curr_index]->Items->AddRange(Selected_classes->ToArray());
+				Subject_SubAllot_cb[curr_teach][curr_sub]->Items->AddRange(Selected_classes->ToArray());
 
 				// If the current box has a value selected:
-				if (this->Subject_SubAllot_cb[curr_index]->SelectedIndex != -1 && this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->SelectedItem->ToString() != " ") {
-					String^ selection = this->Subject_SubAllot_cb[curr_index]->SelectedItem->ToString();
+				if (this->Subject_SubAllot_cb[curr_teach][curr_sub]->SelectedIndex > 0) {
+					String^ selection = this->Subject_SubAllot_cb[curr_teach][curr_sub]->SelectedItem->ToString();
 
 					// Remove the entry that is selected in the current ComboBox from all the ComboBoxes except the current one.
 					for (int i = 0; i < Max_Teachers; i++) {
 						for (int j = 0; j < Max_subject_per_teacher; j++) {
-							if (i * Max_subject_per_teacher + j != curr_index)
-								this->Subject_SubAllot_cb[(i * Max_subject_per_teacher) + j]->Items->Remove(selection);
+							if (i != curr_teach || j != curr_sub)
+								this->Subject_SubAllot_cb[i][j]->Items->Remove(selection);
 						} // End inner - for (int j = 0; j < Max_subject_per_teacher; j++)
 					} // End inner - for (int i = 0; i < Max_Teachers; i++)
 
@@ -1433,5 +1527,5 @@ namespace MSP {
 		}
 	}
 	// Functions - Subject Manager - end
-};
+	};
 }

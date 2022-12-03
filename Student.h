@@ -36,6 +36,7 @@ namespace MSP {
 				delete components;
 			}
 		}
+
 	// Student_homepage - items - start
 	private: System::Windows::Forms::Label^ Student_hp_header;
 
@@ -58,11 +59,24 @@ namespace MSP {
 	private: System::Windows::Forms::Label^ Homescreen_menu_label;
 	private: System::Windows::Forms::PictureBox^ Homescreen_menu_button;
 
+	private: System::Windows::Forms::Label^ Attendance_menu_label;
+	private: System::Windows::Forms::PictureBox^ Attendance_menu_button;
+
 	private: System::Windows::Forms::PictureBox^ Marks_menu_button;
 	private: System::Windows::Forms::Label^ Marks_menu_label;
 
-	private: System::Windows::Forms::Label^ Attendance_menu_label;
-	private: System::Windows::Forms::PictureBox^ Attendance_menu_button;
+	private: System::Windows::Forms::Label^ Resetpass_menu_label;
+	private: System::Windows::Forms::PictureBox^ Resetpass_menu_button;
+
+	private: System::Windows::Forms::Label^ Logout_menu_label;
+	private: System::Windows::Forms::PictureBox^ Logout_menu_button;
+
+	private: Form^ New_Pass_prompt = gcnew Form();
+	private: Label^ New_pass_message_label = gcnew Label();
+	private: TextBox^ New_Pass_tb = gcnew TextBox();
+	private: TextBox^ New_Pass_Confirmation_tb = gcnew TextBox();
+	private: Button^ New_pass_update_button = gcnew Button();
+
 	// Menu - items - end
 
 	// Student attendance - items - start
@@ -78,7 +92,6 @@ namespace MSP {
 
 	// Student marks - items - start
 	private: Label^ Student_Marks_header;
-	private: ComboBox^ Subject_db;
 	private: array<Label^>^ Exam_headers;
 
 	private: array<array<array<Label^>^>^>^ Exam_labels; // 3D array [exam][column][number]
@@ -291,39 +304,22 @@ namespace MSP {
 			this->Marks_menu_button = (gcnew System::Windows::Forms::PictureBox());
 			this->Marks_menu_label = (gcnew System::Windows::Forms::Label());
 			
+			this->Resetpass_menu_label = (gcnew System::Windows::Forms::Label());
+			this->Resetpass_menu_button = (gcnew System::Windows::Forms::PictureBox());
+
+			this->Logout_menu_label = (gcnew System::Windows::Forms::Label());
+			this->Logout_menu_button = (gcnew System::Windows::Forms::PictureBox());
+
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Menu_button_closed))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Menu_button_open))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Marks_menu_button))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Attendance_menu_button))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Homescreen_menu_button))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Attendance_menu_button))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Marks_menu_button))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Resetpass_menu_button))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Logout_menu_button))->BeginInit();
 
 			this->SuspendLayout();
 
-			// 
-			// Menu_button_closed
-			// 
-			this->Menu_button_closed->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->Menu_button_closed->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->Menu_button_closed->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Menu_closed_button_Image")));
-			this->Menu_button_closed->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->Menu_button_closed->Location = System::Drawing::Point(15, this->ClientSize.Height - 47);
-			this->Menu_button_closed->Name = L"Menu_button_closed";
-			this->Menu_button_closed->Size = System::Drawing::Size(35, 35);
-			this->Menu_button_closed->TabStop = false;
-			this->Menu_button_closed->Click += gcnew System::EventHandler(this, &Student::Menu_closed_button_Click);
-			// 
-			// Menu_button_open
-			// 
-			this->Menu_button_open->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->Menu_button_open->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->Menu_button_open->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Menu_open_button_Image")));
-			this->Menu_button_open->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
-			this->Menu_button_open->Location = System::Drawing::Point(15, this->ClientSize.Height - 47);
-			this->Menu_button_open->Name = L"Menu_button_open";
-			this->Menu_button_open->Size = System::Drawing::Size(35, 35);
-			this->Menu_button_open->Click += gcnew System::EventHandler(this, &Student::Menu_open_button_Click);
-			this->Menu_button_open->Visible = false;
-			
 			// 
 			// Homescreen_menu_button
 			// 
@@ -331,7 +327,7 @@ namespace MSP {
 			this->Homescreen_menu_button->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Homescreen_menu_button->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Homescreen_menu_Image")));
 			this->Homescreen_menu_button->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->Homescreen_menu_button->Location = System::Drawing::Point(15, this->ClientSize.Height - 164);
+			this->Homescreen_menu_button->Location = System::Drawing::Point(15, this->ClientSize.Height - 245);
 			this->Homescreen_menu_button->Name = L"Homescreen_menu_button";
 			this->Homescreen_menu_button->Size = System::Drawing::Size(35, 35);
 			this->Homescreen_menu_button->Click += gcnew System::EventHandler(this, &Student::Homescreen_menu_click);
@@ -342,7 +338,7 @@ namespace MSP {
 			this->Homescreen_menu_label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->Homescreen_menu_label->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Homescreen_menu_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9.25F, System::Drawing::FontStyle::Bold));
-			this->Homescreen_menu_label->Location = System::Drawing::Point(50, this->ClientSize.Height - 164);
+			this->Homescreen_menu_label->Location = System::Drawing::Point(50, this->Homescreen_menu_button->Top);
 			this->Homescreen_menu_label->Name = L"Homescreen_menu_label";
 			this->Homescreen_menu_label->Size = System::Drawing::Size(120, 35);
 			this->Homescreen_menu_label->Text = L"View Homescreen";
@@ -354,10 +350,10 @@ namespace MSP {
 			// Attendance_menu_button
 			// 
 			this->Attendance_menu_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->Attendance_menu_button->BackColor = System::Drawing::Color::LavenderBlush;
+			this->Attendance_menu_button->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Attendance_menu_button->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Attendance_menu_Image")));
 			this->Attendance_menu_button->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->Attendance_menu_button->Location = System::Drawing::Point(15, this->ClientSize.Height - 126);
+			this->Attendance_menu_button->Location = System::Drawing::Point(15, this->Homescreen_menu_button->Bottom + 5);
 			this->Attendance_menu_button->Name = L"Attendance_menu_button";
 			this->Attendance_menu_button->Size = System::Drawing::Size(35, 35);
 			this->Attendance_menu_button->Click += gcnew System::EventHandler(this, &Student::Attendence_menu_click);
@@ -368,7 +364,7 @@ namespace MSP {
 			this->Attendance_menu_label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->Attendance_menu_label->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Attendance_menu_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 10.25F, System::Drawing::FontStyle::Bold));
-			this->Attendance_menu_label->Location = System::Drawing::Point(50, this->ClientSize.Height - 126);
+			this->Attendance_menu_label->Location = System::Drawing::Point(50, this->Attendance_menu_button->Top);
 			this->Attendance_menu_label->Name = L"Attendance_menu_label";
 			this->Attendance_menu_label->Size = System::Drawing::Size(120, 35);
 			this->Attendance_menu_label->Text = L"View Attendance";
@@ -383,7 +379,7 @@ namespace MSP {
 			this->Marks_menu_button->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Marks_menu_button->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Marks_menu_Image")));
 			this->Marks_menu_button->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->Marks_menu_button->Location = System::Drawing::Point(15, this->ClientSize.Height - 88);
+			this->Marks_menu_button->Location = System::Drawing::Point(15, this->Attendance_menu_button->Bottom + 5);
 			this->Marks_menu_button->Name = L"Marks_menu_button";
 			this->Marks_menu_button->Size = System::Drawing::Size(35, 35);
 			this->Marks_menu_button->Click += gcnew System::EventHandler(this, &Student::Marks_menu_click);
@@ -394,7 +390,7 @@ namespace MSP {
 			this->Marks_menu_label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->Marks_menu_label->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Marks_menu_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 10.25F, System::Drawing::FontStyle::Bold));
-			this->Marks_menu_label->Location = System::Drawing::Point(50, this->ClientSize.Height - 88);
+			this->Marks_menu_label->Location = System::Drawing::Point(50, this->Marks_menu_button->Top);
 			this->Marks_menu_label->Name = L"Marks_menu_label";
 			this->Marks_menu_label->Size = System::Drawing::Size(120, 35);
 			this->Marks_menu_label->Text = L"View Marks";
@@ -403,11 +399,85 @@ namespace MSP {
 			this->Marks_menu_label->Visible = false;
 			
 			// 
+			// Resetpass_menu_button
+			// 
+			this->Resetpass_menu_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Resetpass_menu_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Resetpass_menu_button->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Resetpass_menu_Image")));
+			this->Resetpass_menu_button->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->Resetpass_menu_button->Location = System::Drawing::Point(15, this->Marks_menu_button->Bottom + 5);
+			this->Resetpass_menu_button->Name = L"Resetpass_menu_button";
+			this->Resetpass_menu_button->Size = System::Drawing::Size(35, 35);
+			this->Resetpass_menu_button->Click += gcnew System::EventHandler(this, &Student::Resetpass_menu_click);
+			this->Resetpass_menu_button->Visible = false;
+			// 
+			// Resetpass_menu_label
+			// 
+			this->Resetpass_menu_label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Resetpass_menu_label->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Resetpass_menu_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 10.25F, System::Drawing::FontStyle::Bold));
+			this->Resetpass_menu_label->Location = System::Drawing::Point(50, this->Resetpass_menu_button->Top);
+			this->Resetpass_menu_label->Name = L"Resetpass_menu_label";
+			this->Resetpass_menu_label->Size = System::Drawing::Size(120, 35);
+			this->Resetpass_menu_label->Text = L"Reset Password";
+			this->Resetpass_menu_label->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->Resetpass_menu_label->Click += gcnew System::EventHandler(this, &Student::Resetpass_menu_click);
+			this->Resetpass_menu_label->Visible = false;
+
+			// 
+			// Logout_menu_button
+			// 
+			this->Logout_menu_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Logout_menu_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Logout_menu_button->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Logout_menu_Image")));
+			this->Logout_menu_button->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->Logout_menu_button->Location = System::Drawing::Point(15, this->Resetpass_menu_button->Bottom + 5);
+			this->Logout_menu_button->Name = L"Logout_menu_button";
+			this->Logout_menu_button->Size = System::Drawing::Size(35, 35);
+			this->Logout_menu_button->Click += gcnew System::EventHandler(this, &Student::Logout_menu_click);
+			this->Logout_menu_button->Visible = false;
+			// 
+			// Logout_menu_label
+			// 
+			this->Logout_menu_label->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Logout_menu_label->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Logout_menu_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 10.25F, System::Drawing::FontStyle::Bold));
+			this->Logout_menu_label->Location = System::Drawing::Point(50, this->Logout_menu_button->Top);
+			this->Logout_menu_label->Name = L"Logout_menu_label";
+			this->Logout_menu_label->Size = System::Drawing::Size(120, 35);
+			this->Logout_menu_label->Text = L"Logout";
+			this->Logout_menu_label->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->Logout_menu_label->Click += gcnew System::EventHandler(this, &Student::Logout_menu_click);
+			this->Logout_menu_label->Visible = false;
+			
+			// 
+			// Menu_button_closed
+			// 
+			this->Menu_button_closed->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Menu_button_closed->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Menu_button_closed->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Menu_closed_button_Image")));
+			this->Menu_button_closed->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->Menu_button_closed->Location = System::Drawing::Point(15, this->Logout_menu_button->Bottom + 5);
+			this->Menu_button_closed->Name = L"Menu_button_closed";
+			this->Menu_button_closed->Size = System::Drawing::Size(35, 35);
+			this->Menu_button_closed->TabStop = false;
+			this->Menu_button_closed->Click += gcnew System::EventHandler(this, &Student::Menu_closed_button_Click);
+			// 
+			// Menu_button_open
+			// 
+			this->Menu_button_open->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Menu_button_open->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Menu_button_open->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"Menu_open_button_Image")));
+			this->Menu_button_open->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->Menu_button_open->Location = System::Drawing::Point(15, this->Logout_menu_button->Bottom + 5);
+			this->Menu_button_open->Name = L"Menu_button_open";
+			this->Menu_button_open->Size = System::Drawing::Size(35, 35);
+			this->Menu_button_open->Click += gcnew System::EventHandler(this, &Student::Menu_open_button_Click);
+			this->Menu_button_open->Visible = false;
+			
+			// 
 			// Menu
 			// 
-			this->Controls->Add(this->Menu_button_closed);
-			this->Controls->Add(this->Menu_button_open);
-
 			this->Controls->Add(this->Homescreen_menu_label);
 			this->Controls->Add(this->Homescreen_menu_button);
 			
@@ -417,11 +487,22 @@ namespace MSP {
 			this->Controls->Add(this->Marks_menu_label);
 			this->Controls->Add(this->Marks_menu_button);
 
+			this->Controls->Add(this->Resetpass_menu_button);
+			this->Controls->Add(this->Resetpass_menu_label);
+
+			this->Controls->Add(this->Logout_menu_button);
+			this->Controls->Add(this->Logout_menu_label);
+
+			this->Controls->Add(this->Menu_button_closed);
+			this->Controls->Add(this->Menu_button_open);
+
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Homescreen_menu_button))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Attendance_menu_button))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Marks_menu_button))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Resetpass_menu_button))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Logout_menu_button))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Menu_button_closed))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Menu_button_open))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Marks_menu_button))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Attendance_menu_button))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Homescreen_menu_button))->EndInit();
 
 			this->Scroll += gcnew System::Windows::Forms::ScrollEventHandler(this, &MSP::Student::OnScroll);
 			this->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &MSP::Student::OnScroll);
@@ -433,8 +514,6 @@ namespace MSP {
 		}
 
 		void InitializeComponent_Attendance(void) {
-			int Lec_per_week = 2;
-
 			// Setup current subject variable incase the subject drop-down menu is unselected
 			if (curr_subject == -1)
 				curr_subject = 0;
@@ -449,10 +528,10 @@ namespace MSP {
 				this->Serial_labels[i] = gcnew Label();
 			}
 
-			this->Attendance_labels = gcnew array<array<Label^>^>(Lec_per_week);
-			for (int i = 0; i < Lec_per_week; i++) {
-				this->Attendance_labels[i] = gcnew array<Label^>(Max_Weeks + 1);
-				for (int j = 0; j < Max_Weeks + 1; j++)
+			this->Attendance_labels = gcnew array<array<Label^>^>(Max_Weeks + 1);
+			for (int i = 0; i < Max_Weeks + 1; i++) {
+				this->Attendance_labels[i] = gcnew array<Label^>(Lec_per_Week);
+				for (int j = 0; j < Lec_per_Week; j++)
 					this->Attendance_labels[i][j] = gcnew Label();
 			}
 
@@ -504,7 +583,7 @@ namespace MSP {
 			// 
 			this->Progress_bar_foreground->Anchor = static_cast<AnchorStyles>(AnchorStyles::Top | AnchorStyles::Left);
 			this->Progress_bar_foreground->BorderStyle = BorderStyle::Fixed3D;
-			this->Progress_bar_foreground->Font = (gcnew System::Drawing::Font(L"Segoe UI", 18.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->Progress_bar_foreground->Font = (gcnew System::Drawing::Font(L"Segoe UI", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Progress_bar_foreground->ForeColor = Color::White;
 			this->Progress_bar_foreground->BackColor = Color::RoyalBlue;
@@ -535,35 +614,33 @@ namespace MSP {
 					this->Serial_labels[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 12.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 						static_cast<System::Byte>(0)));
 					this->Serial_labels[i]->Text = stoS(std::to_string(i) + ")");
-					this->Serial_labels[i]->Left = this->Serial_labels[i - 1]->Left;
-					this->Serial_labels[i]->Top = this->Serial_labels[i - 1]->Bottom + 5;
+					this->Serial_labels[i]->Location = System::Drawing::Point(this->Serial_labels[i - 1]->Left, this->Serial_labels[i - 1]->Bottom + 5);
 				}
 
 			}
 			//
 			// Lecture_labels
 			//
-			for (int lec_no = 0; lec_no < Lec_per_week; lec_no++) {
-				for (int week_no = 0; week_no < Max_Weeks + 1; week_no++)
-				{
-					this->Attendance_labels[lec_no][week_no]->Anchor = AnchorStyles::Top;
-					this->Attendance_labels[lec_no][week_no]->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-					this->Attendance_labels[lec_no][week_no]->ForeColor = Color::Black;
+			for (int week_no = 0; week_no < Max_Weeks + 1; week_no++) {
+				for (int lec_no = 0; lec_no < Lec_per_Week; lec_no++) {
+					this->Attendance_labels[week_no][lec_no]->Anchor = AnchorStyles::Top;
+					this->Attendance_labels[week_no][lec_no]->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+					this->Attendance_labels[week_no][lec_no]->ForeColor = Color::Black;
 					if (lec_no == 0)
-						this->Attendance_labels[lec_no][week_no]->Location = System::Drawing::Point(this->Serial_labels[week_no]->Right + 5, this->Serial_labels[week_no]->Top);
+						this->Attendance_labels[week_no][lec_no]->Location = System::Drawing::Point(this->Serial_labels[week_no]->Right + 5, this->Serial_labels[week_no]->Top);
 					else
-						this->Attendance_labels[lec_no][week_no]->Location = System::Drawing::Point(this->Attendance_labels[lec_no - 1][week_no]->Right + 5, this->Attendance_labels[lec_no - 1][week_no]->Top);
-					this->Attendance_labels[lec_no][week_no]->Name = stoS("Att_label_Lec" + std::to_string(lec_no + 1) + "_Week_" + std::to_string(week_no));
-					this->Attendance_labels[lec_no][week_no]->Size = System::Drawing::Size(250, 30);
-					this->Attendance_labels[lec_no][week_no]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+						this->Attendance_labels[week_no][lec_no]->Location = System::Drawing::Point(this->Attendance_labels[week_no][lec_no - 1]->Right + 5, this->Attendance_labels[week_no][lec_no - 1]->Top);
+					this->Attendance_labels[week_no][lec_no]->Name = stoS("Att_label_Lec" + std::to_string(lec_no + 1) + "_Week_" + std::to_string(week_no));
+					this->Attendance_labels[week_no][lec_no]->Size = System::Drawing::Size(250, 30);
+					this->Attendance_labels[week_no][lec_no]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 					if (week_no == 0) {
-						this->Attendance_labels[lec_no][week_no]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+						this->Attendance_labels[week_no][lec_no]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 							static_cast<System::Byte>(0)));
-						this->Attendance_labels[lec_no][week_no]->Text = stoS("Lecture " + std::to_string(lec_no + 1));
+						this->Attendance_labels[week_no][lec_no]->Text = stoS("Lecture " + std::to_string(lec_no + 1));
 					}
 					else {
-						this->Attendance_labels[lec_no][week_no]->BackColor = Color::WhiteSmoke;
-						this->Attendance_labels[lec_no][week_no]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+						this->Attendance_labels[week_no][lec_no]->BackColor = Color::WhiteSmoke;
+						this->Attendance_labels[week_no][lec_no]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 10.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 							static_cast<System::Byte>(0)));
 					}
 				}
@@ -580,7 +657,7 @@ namespace MSP {
 			this->Controls->Add(this->Progress_bar_background);
 			this->Controls->Add(this->Progress_bar_foreground);
 			this->Controls->AddRange(this->Serial_labels);
-			for (int i = 0; i < Lec_per_week; i++)
+			for (int i = 0; i < Max_Weeks + 1; i++)
 				this->Controls->AddRange(this->Attendance_labels[i]);
 			this->Name = L"Student_attendance";
 			this->Text = L"Student Attendance";
@@ -651,7 +728,7 @@ namespace MSP {
 			// 
 			// Subject_selector_cb
 			// 
-			this->Subject_selector_cb->Anchor = static_cast<AnchorStyles>(AnchorStyles::Top | AnchorStyles::Left);
+			this->Subject_selector_cb->Anchor = static_cast<AnchorStyles>(AnchorStyles::Top | AnchorStyles::Right);
 			this->Subject_selector_cb->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->Subject_selector_cb->FormattingEnabled = true;
 			this->Subject_selector_cb->Location = System::Drawing::Point(450, 70);
@@ -746,7 +823,7 @@ namespace MSP {
 			this->Grade_label->Size = System::Drawing::Size(680, 30);
 
 			this->Grade_label->Text = stoS("Grade : " + Student_marks[curr_sec][student_no].grade[curr_subject]);
-			if (Student_marks[curr_sec][student_no].grade[curr_subject] != "NaN")
+			if (subjects_details[curr_sec][curr_subject].grading_enabled && subjects_details[curr_sec][curr_subject].course_code != "" && subjects_details[curr_sec][curr_subject].name != "")
 				this->Grade_label->Visible = true;
 			else
 				this->Grade_label->Visible = false;
@@ -772,7 +849,9 @@ namespace MSP {
 			this->Name = L"Student_Marks";
 			this->Text = L"Student Marks";
 
-			load_data();
+			if (this->Subject_selector_cb->SelectedIndex != -1 )
+				load_data();
+
 			reload_button();
 
 			this->ResumeLayout(false);
@@ -803,67 +882,165 @@ namespace MSP {
 		reposition_menu_items();
 	}
 	private: void reposition_menu_items(void) {
-		this->Homescreen_menu_button->Top = this->ClientSize.Height - 164;
-		this->Homescreen_menu_label->Top = this->ClientSize.Height - 164;
-		this->Attendance_menu_button->Top = this->ClientSize.Height - 126;
-		this->Attendance_menu_label->Top = this->ClientSize.Height - 126;
-		this->Marks_menu_button->Top = this->ClientSize.Height - 88;
-		this->Marks_menu_label->Top = this->ClientSize.Height - 88;
-		this->Menu_button_closed->Top = this->ClientSize.Height - 47;
-		this->Menu_button_open->Top = this->ClientSize.Height - 47;
+		this->Homescreen_menu_button->Top = this->ClientSize.Height - 245;
+		this->Homescreen_menu_label->Top = this->Homescreen_menu_button->Top;
+		this->Attendance_menu_button->Top = this->Homescreen_menu_button->Bottom + 5;
+		this->Attendance_menu_label->Top = this->Attendance_menu_button->Top;
+		this->Marks_menu_button->Top = this->Attendance_menu_button->Bottom + 5;
+		this->Marks_menu_label->Top = this->Marks_menu_button->Top;
+		this->Resetpass_menu_button->Top = this->Marks_menu_button->Bottom + 5;
+		this->Resetpass_menu_label->Top = this->Resetpass_menu_button->Top;
+		this->Logout_menu_button->Top = this->Resetpass_menu_button->Bottom + 5;
+		this->Logout_menu_label->Top = this->Logout_menu_button->Top;
+		this->Menu_button_closed->Top = this->Logout_menu_button->Bottom + 5;
+		this->Menu_button_open->Top = this->Menu_button_closed->Top;
+	}
+	private: System::Void Update_student_creds(System::Object^ sender, System::EventArgs^ e) {
+		if (this->New_Pass_tb->Text == this->New_Pass_Confirmation_tb->Text && (this->New_Pass_tb->TextLength >= 4)) {
+			Stu_Cred[curr_sec][student_no].pass = Stos(this->New_Pass_tb->Text);
+
+			WriteCredentials(Student_Cred_Folder, string("Sec_") + Sec_list[curr_sec] + ".txt", Stu_Cred[curr_sec], Max_Students);
+
+			this->New_Pass_prompt->Close();
+		}
+		else if (this->New_Pass_tb->TextLength < 4)
+			MessageBox::Show("Pasword must be atleast 4 characters!");
+		else if (this->New_Pass_tb->Text != this->New_Pass_Confirmation_tb->Text)
+			MessageBox::Show("Paswords do not match. Please try again!");
 	}
 	private: System::Void Menu_closed_button_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->Menu_button_closed->Visible = false;
-		this->Menu_button_open->Visible = true;
-		this->Marks_menu_label->Visible = true;
-		this->Marks_menu_button->Visible = true;
-		this->Attendance_menu_label->Visible = true;
-		this->Attendance_menu_button->Visible = true;
-		this->Attendance_menu_label->Visible = true;
 		this->Homescreen_menu_button->Visible = true;
 		this->Homescreen_menu_label->Visible = true;
-		this->Menu_button_open->BringToFront();
-		this->Marks_menu_label->BringToFront();
-		this->Marks_menu_button->BringToFront();
-		this->Attendance_menu_label->BringToFront();
-		this->Attendance_menu_button->BringToFront();
-		this->Attendance_menu_label->BringToFront();
+		this->Attendance_menu_button->Visible = true;
+		this->Attendance_menu_label->Visible = true;
+		this->Marks_menu_button->Visible = true;
+		this->Marks_menu_label->Visible = true;
+		this->Resetpass_menu_button->Visible = true;
+		this->Resetpass_menu_label->Visible = true;
+		this->Logout_menu_button->Visible = true;
+		this->Logout_menu_label->Visible = true;
+		this->Menu_button_open->Visible = true;
+		
+		this->Menu_button_closed->Visible = false;
+		
 		this->Homescreen_menu_button->BringToFront();
 		this->Homescreen_menu_label->BringToFront();
+		this->Attendance_menu_button->BringToFront();
+		this->Attendance_menu_label->BringToFront();
+		this->Marks_menu_button->BringToFront();
+		this->Marks_menu_label->BringToFront();
+		this->Resetpass_menu_button->BringToFront();
+		this->Resetpass_menu_label->BringToFront();
+		this->Logout_menu_button->BringToFront();
+		this->Logout_menu_label->BringToFront();
+		this->Menu_button_open->BringToFront();
 	}
 	private: System::Void Menu_open_button_Click(System::Object^ sender, System::EventArgs^ e)
 	{
 		this->Menu_button_closed->Visible = true;
+		
 		this->Menu_button_closed->BringToFront();
-		this->Menu_button_open->Visible = false;
-		this->Marks_menu_label->Visible = false;
-		this->Marks_menu_button->Visible = false;
-		this->Attendance_menu_label->Visible = false;
-		this->Attendance_menu_button->Visible = false;
-		this->Attendance_menu_label->Visible = false;
+		
 		this->Homescreen_menu_button->Visible = false;
 		this->Homescreen_menu_label->Visible = false;
+		this->Attendance_menu_button->Visible = false;
+		this->Attendance_menu_label->Visible = false;
+		this->Marks_menu_label->Visible = false;
+		this->Marks_menu_button->Visible = false;
+		this->Resetpass_menu_button->Visible = false;
+		this->Resetpass_menu_label->Visible = false;
+		this->Logout_menu_button->Visible = false;
+		this->Logout_menu_label->Visible = false;
+		this->Menu_button_open->Visible = false;
 	}
 	private: System::Void Homescreen_menu_click(System::Object^ sender, System::EventArgs^ e) {
+		bool is_maximized = false;
 		this->Hide();
+		if (this->WindowState == FormWindowState::Maximized) {
+			this->WindowState = FormWindowState::Normal;
+			is_maximized = true;
+		}
 		this->Controls->Clear();
 		this->InitializeComponent();
 		this->InitializeComponent_Menu();
+		if (is_maximized)
+			this->WindowState = FormWindowState::Maximized;
+
 		this->Show();
 	}
 	private: System::Void Attendence_menu_click(System::Object^ sender, System::EventArgs^ e) {
+		bool is_maximized = false;
 		this->Hide();
+		if (this->WindowState == FormWindowState::Maximized) {
+			this->WindowState = FormWindowState::Normal;
+			is_maximized = true;
+		}
 		this->Controls->Clear();
 		this->InitializeComponent_Attendance();
 		this->InitializeComponent_Menu();
+		if ( is_maximized )
+			this->WindowState = FormWindowState::Maximized;
 		this->Show();
 	}
 	private: System::Void Marks_menu_click(System::Object^ sender, System::EventArgs^ e) {
+		bool is_maximized = false;
 		this->Hide();
+		if (this->WindowState == FormWindowState::Maximized) {
+			this->WindowState = FormWindowState::Normal;
+			is_maximized = true;
+		}
 		this->Controls->Clear();
 		this->InitializeComponent_Marks();
 		this->InitializeComponent_Menu();
+		if (is_maximized)
+			this->WindowState = FormWindowState::Maximized;
+
 		this->Show();
+	}
+	private: System::Void Resetpass_menu_click(System::Object^ sender, System::EventArgs^ e) {
+		this->New_Pass_prompt->Size = System::Drawing::Size(250, 200);
+		this->New_Pass_prompt->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedDialog;
+		this->New_Pass_prompt->Text = "Reset Password";
+		this->New_Pass_prompt->StartPosition = FormStartPosition::CenterParent;
+		this->New_Pass_prompt->MinimizeBox = false;
+		this->New_Pass_prompt->MaximizeBox = false;
+
+		this->New_pass_message_label->Size = System::Drawing::Size(200, 30);
+		this->New_pass_message_label->Location = System::Drawing::Point(25, 10);
+		this->New_pass_message_label->Text = "Enter new password : ";
+		this->New_pass_message_label->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			static_cast<System::Byte>(0)));
+
+		this->New_Pass_tb->Size = System::Drawing::Size(200, 30);;
+		this->New_Pass_tb->Location = System::Drawing::Point(25, 50);
+		this->New_Pass_tb->UseSystemPasswordChar = true;
+		this->New_Pass_tb->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			static_cast<System::Byte>(0)));
+		this->New_Pass_tb->Clear();
+
+		this->New_Pass_Confirmation_tb->Size = System::Drawing::Size(200, 30);;
+		this->New_Pass_Confirmation_tb->Location = System::Drawing::Point(25, 90);
+		this->New_Pass_Confirmation_tb->UseSystemPasswordChar = true;
+		this->New_Pass_Confirmation_tb->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			static_cast<System::Byte>(0)));
+		this->New_Pass_Confirmation_tb->Clear();
+
+		this->New_pass_update_button->Text = "Update";
+		this->New_pass_update_button->Location = System::Drawing::Point(175, 130);
+		this->New_pass_update_button->Size = System::Drawing::Size(50, 20);
+		this->New_pass_update_button->Click += gcnew System::EventHandler(this, &Student::Update_student_creds);
+		this->New_Pass_prompt->AcceptButton = this->New_pass_update_button;
+
+		this->New_Pass_prompt->Controls->Add(this->New_pass_message_label);
+		this->New_Pass_prompt->Controls->Add(this->New_Pass_tb);
+		this->New_Pass_prompt->Controls->Add(this->New_Pass_Confirmation_tb);
+		this->New_Pass_prompt->Controls->Add(this->New_pass_update_button);
+		this->New_Pass_prompt->ShowDialog();
+	}
+	private: System::Void Logout_menu_click(System::Object^ sender, System::EventArgs^ e) {
+		if (MessageBox::Show(L"Do you want to logout?", L"Login Confirmation", MessageBoxButtons::YesNo)
+			== System::Windows::Forms::DialogResult::Yes)
+			this->Close();
 	}
 	// Menu - functions - end
 
@@ -1099,61 +1276,70 @@ namespace MSP {
 
 	// Student_attendance - functions
 	private: void attendance_reload() {
-		int presences = 0, absences = 0;
-		curr_subject = this->Subject_selector_cb->SelectedIndex;
+		if (this->Subject_selector_cb->SelectedIndex != -1 ) {
+			int presences = 0, absences = 0;
+			curr_subject = this->Subject_selector_cb->SelectedIndex;
 
-		for (int i = 0; i < Max_Weeks; i++)
-		{
-			if (Student_att[curr_sec][student_no].lec1[curr_subject][i] == "Present") {
-				presences++;
-				this->Attendance_labels[0][i + 1]->ForeColor = Color::Black;
-			}
-			else if (Student_att[curr_sec][student_no].lec1[curr_subject][i] == "Absent") {
-				absences++;
-				this->Attendance_labels[0][i + 1]->ForeColor = Color::Red;
-			}
-			if (Student_att[curr_sec][student_no].lec2[curr_subject][i] == "Present") {
-				presences++;
-				this->Attendance_labels[1][i + 1]->ForeColor = Color::Black;
-			}
-			else if (Student_att[curr_sec][student_no].lec2[curr_subject][i] == "Absent") {
-				absences++;
-				this->Attendance_labels[1][i + 1]->ForeColor = Color::Red;
+			// Position of the headers i.e. the 0th indexes of the columns
+			for (int i = 0; i < Lec_per_Week; i++)
+				if (i == 0) this->Attendance_labels[0][i]->Left = this->Serial_labels[0]->Right + 5;
+				else this->Attendance_labels[0][i]->Left = this->Attendance_labels[0][i - 1]->Right + 5;
+
+			for (int i = 0; i < Max_Weeks; i++)
+			{
+				for (int j = 0; j < Lec_per_Week; j++) {
+					if (Student_att[curr_sec][student_no].lec[curr_subject][i][j] == "Present") {
+						presences++;
+						this->Attendance_labels[i + 1][j]->ForeColor = Color::Black;
+					}
+					else if (Student_att[curr_sec][student_no].lec[curr_subject][i][j] == "Absent") {
+						absences++;
+						this->Attendance_labels[i + 1][j]->ForeColor = Color::Red;
+					}
+
+					this->Attendance_labels[i + 1][j]->Text = stoS(Student_att[curr_sec][student_no].lec[curr_subject][i][j]);
+					if (j == 0)
+						this->Attendance_labels[i + 1][j]->Left = this->Serial_labels[i + 1]->Right + 5;
+					else
+						this->Attendance_labels[i + 1][j]->Left = this->Attendance_labels[i + 1][j - 1]->Right + 5;
+				}
 			}
 
-			this->Attendance_labels[0][i + 1]->Text = stoS(Student_att[curr_sec][student_no].lec1[curr_subject][i]);
-			this->Attendance_labels[0][i + 1]->Left = this->Serial_labels[i + 1]->Right + 5;
-			this->Attendance_labels[1][i + 1]->Text = stoS(Student_att[curr_sec][student_no].lec2[curr_subject][i]);
-			this->Attendance_labels[1][i + 1]->Left = this->Attendance_labels[0][i + 1]->Right + 5;
+			float percentage = float(presences) / (presences + absences);
+			this->Progress_bar_foreground->Width = int(percentage * (this->Progress_bar_background->Width - 2 * (this->Progress_bar_foreground->Left - this->Progress_bar_background->Left)));
+			this->Progress_bar_foreground->Text = stoS(to_string_with_precision(percentage * 100, 2));
+			this->Progress_bar_foreground->BringToFront();
 		}
-		this->Attendance_labels[0][0]->Left = this->Serial_labels[0]->Right + 5;
-		this->Attendance_labels[1][0]->Left = this->Attendance_labels[0][0]->Right + 5;
-
-		float percentage = float(presences) / (presences + absences);
-		this->Progress_bar_foreground->Width = int(percentage * (this->Progress_bar_background->Width - 2 * (this->Progress_bar_foreground->Left - this->Progress_bar_background->Left)));
-		this->Progress_bar_foreground->Text = stoS(to_string_with_precision(percentage * 100, 2));
-		this->Progress_bar_foreground->BringToFront();
-
 	}
 	// Student_attendance - functions - end
 
 	private: System::Void Change_subject(System::Object^ sender, System::EventArgs^ e) {
-		curr_subject = this->Subject_selector_cb->SelectedIndex;
-		
-		this->Hide();
+		if (this->Subject_selector_cb->SelectedIndex != -1 ) {
+			int counter = -1;
+			for (int i = 0; i < Max_Subjects; i++)
+				if (subjects_details[curr_sec][i].course_code != "" && subjects_details[curr_sec][i].name != "") {
+					counter++;
+					if (counter == this->Subject_selector_cb->SelectedIndex) {
+						curr_subject = i;
+						break;
+					}
+				}
 
-		this->Controls->Clear();
-		
-		String^ page = static_cast<Control^>(sender)->Tag->ToString();
-		if (page == "Attendance")
-			this->InitializeComponent_Attendance();
-		else if (page == "Marks")
-			this->InitializeComponent_Marks();
-		
-		this->InitializeComponent_Menu();
+			this->Hide();
 
-		this->Show();
-		reposition_menu_items();
+			this->Controls->Clear();
+
+			String^ page = static_cast<Control^>(sender)->Tag->ToString();
+			if (page == "Attendance")
+				this->InitializeComponent_Attendance();
+			else if (page == "Marks")
+				this->InitializeComponent_Marks();
+
+			this->InitializeComponent_Menu();
+
+			this->Show();
+			reposition_menu_items();
+		}
 	}
-};
+	};
 }
