@@ -42,8 +42,15 @@ namespace MSP {
 
 	// Operation_selector - items - start
 	private: System::Windows::Forms::Label ^Operation_sel_header, ^Operation_sel_subheader;
-	private: System::Windows::Forms::Button ^Manage_marks_button, ^Manage_attendance_button, ^Calculate_Grades_button, ^Back_from_opsel_button;
+	private: System::Windows::Forms::Button ^Manage_marks_button, ^Manage_attendance_button, ^Calculate_Grades_button, ^Back_from_opsel_button, ^View_class_summary_button;
 	// Operation_selector - items - end
+
+	// Class Summary - items - start
+	private: System::Windows::Forms::Label^ Summary_header, ^Marks_class_sum_header, ^Grade_class_sum_header;
+	private: System::Windows::Forms::Button^ Back_from_class_sum_button;
+	private: System::Windows::Forms::ComboBox^ Main_Activity_selector, ^Activity_Number_selector;
+	private: array<System::Windows::Forms::Label^> ^Sr_class_sum_l, ^Name_class_sum_l, ^ID_class_sum_l, ^Marks_class_sum_l, ^Grade_class_sum_l;
+	// Class Summary - items - start
 
 	// Exam_type - items - start
 	private: System::Windows::Forms::Label ^Exam_type_header;
@@ -64,7 +71,7 @@ namespace MSP {
 	private: System::Windows::Forms::Button ^Save_marksheet_button, ^Back_from_marksheet_button;
 	// Marksheet - items - end
 
-	// Marksheet + Attendance - items - start
+	// Marksheet + Attendance + Class Summary - items - start
 	private: System::Windows::Forms::Label ^Sr_header, ^ID_header, ^Name_header;
 	// Marksheet + Attendance - items - end
 
@@ -199,6 +206,7 @@ namespace MSP {
 			this->Operation_sel_subheader = (gcnew System::Windows::Forms::Label());
 			this->Manage_marks_button = (gcnew System::Windows::Forms::Button());
 			this->Manage_attendance_button = (gcnew System::Windows::Forms::Button());
+			this->View_class_summary_button = (gcnew System::Windows::Forms::Button());
 			this->Calculate_Grades_button = (gcnew System::Windows::Forms::Button());
 			this->Back_from_opsel_button = (gcnew System::Windows::Forms::Button());
 
@@ -251,13 +259,28 @@ namespace MSP {
 			this->Manage_attendance_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Manage_attendance_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->Manage_attendance_button->Location = System::Drawing::Point(250, 220);
+			this->Manage_attendance_button->Location = System::Drawing::Point(250, 200);
 			this->Manage_attendance_button->Name = L"Manage_attendance_button";
 			this->Manage_attendance_button->Size = System::Drawing::Size(200, 30);
 			this->Manage_attendance_button->TabIndex = tab_index++;
 			this->Manage_attendance_button->Text = L"Manage Attendance";
 			this->Manage_attendance_button->UseVisualStyleBackColor = false;
 			this->Manage_attendance_button->Click += gcnew System::EventHandler(this, &Teacher::Manage_attendance_button_Click);
+			// 
+			// View_class_summary_button
+			// 
+			this->View_class_summary_button->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->View_class_summary_button->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->View_class_summary_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->View_class_summary_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->View_class_summary_button->Location = System::Drawing::Point(250, 250);
+			this->View_class_summary_button->Name = L"View_class_summary_button";
+			this->View_class_summary_button->Size = System::Drawing::Size(200, 30);
+			this->View_class_summary_button->TabIndex = tab_index++;
+			this->View_class_summary_button->Text = L"View Class Summary";
+			this->View_class_summary_button->UseVisualStyleBackColor = false;
+			this->View_class_summary_button->Click += gcnew System::EventHandler(this, &Teacher::Class_sum_button_Click);
 			// 
 			// Calculate_Grades_button
 			// 
@@ -266,7 +289,7 @@ namespace MSP {
 			this->Calculate_Grades_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Calculate_Grades_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Calculate_Grades_button->Location = System::Drawing::Point(250, 290);
+			this->Calculate_Grades_button->Location = System::Drawing::Point(250, 300);
 			this->Calculate_Grades_button->Name = L"Calculate_Grades_button";
 			this->Calculate_Grades_button->Size = System::Drawing::Size(200, 30);
 			this->Calculate_Grades_button->TabIndex = tab_index++;
@@ -298,6 +321,7 @@ namespace MSP {
 			this->Controls->Add(this->Operation_sel_subheader);
 			this->Controls->Add(this->Manage_marks_button);
 			this->Controls->Add(this->Manage_attendance_button);
+			this->Controls->Add(this->View_class_summary_button);
 			this->Controls->Add(this->Calculate_Grades_button);
 			this->Controls->Add(this->Back_from_opsel_button);
 			this->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -309,6 +333,275 @@ namespace MSP {
 
 		}
 		// Operation Selector - end
+
+		// Class Summary - start
+		void InitializeComponent_ClassSummary(void)
+		{
+			this->Summary_header = (gcnew System::Windows::Forms::Label());
+			this->Back_from_class_sum_button = (gcnew  System::Windows::Forms::Button());
+			this->Main_Activity_selector = (gcnew  System::Windows::Forms::ComboBox());
+			this->Activity_Number_selector = (gcnew  System::Windows::Forms::ComboBox());
+			
+			this->Sr_header = (gcnew  System::Windows::Forms::Label());
+			this->ID_header = (gcnew  System::Windows::Forms::Label());
+			this->Name_header = (gcnew  System::Windows::Forms::Label());
+			this->Marks_class_sum_header = (gcnew  System::Windows::Forms::Label());
+			this->Grade_class_sum_header = (gcnew  System::Windows::Forms::Label());
+
+			this->Sr_class_sum_l = gcnew array<System::Windows::Forms::Label^>(Max_Students);
+			this->ID_class_sum_l = gcnew array<System::Windows::Forms::Label^>(Max_Students);
+			this->Name_class_sum_l = gcnew array<System::Windows::Forms::Label^>(Max_Students);
+			this->Marks_class_sum_l = gcnew array<System::Windows::Forms::Label^>(Max_Students);
+			this->Grade_class_sum_l = gcnew array<System::Windows::Forms::Label^>(Max_Students);
+			for (int i = 0; i < Max_Students; i++) {
+				this->Sr_class_sum_l[i] = (gcnew  System::Windows::Forms::Label());
+				this->ID_class_sum_l[i] = (gcnew  System::Windows::Forms::Label());
+				this->Name_class_sum_l[i] = (gcnew  System::Windows::Forms::Label());
+				this->Marks_class_sum_l[i] = (gcnew  System::Windows::Forms::Label());
+				this->Grade_class_sum_l[i] = (gcnew  System::Windows::Forms::Label());
+			}
+			
+			this->SuspendLayout();
+			
+			// 
+			// Summary_header
+			// 
+			this->Summary_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Summary_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->Summary_header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Summary_header->Location = System::Drawing::Point(9, 20);
+			this->Summary_header->Name = L"Summary_header";
+			this->Summary_header->Size = System::Drawing::Size(780, 50);
+			this->Summary_header->Text = L"Class Summary";
+			this->Summary_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// Back_button
+			//
+			this->Back_from_class_sum_button->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Top);
+			this->Back_from_class_sum_button->BackColor = System::Drawing::Color::Lavender;
+			this->Back_from_class_sum_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->Back_from_class_sum_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Back_from_class_sum_button->Location = System::Drawing::Point(10, 90);
+			this->Back_from_class_sum_button->Name = L"Back_button";
+			this->Back_from_class_sum_button->Size = System::Drawing::Size(100, 25);
+			this->Back_from_class_sum_button->Text = L"Back";
+			this->Back_from_class_sum_button->Click += gcnew System::EventHandler(this, &Teacher::back_to_opsel);
+			//
+			// Main Activity selector ComboBox
+			//
+			this->Main_Activity_selector->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Top);
+			this->Main_Activity_selector->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->Main_Activity_selector->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Main_Activity_selector->Font = (gcnew System::Drawing::Font(L"Segoe UI SemiBold", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Main_Activity_selector->Location = System::Drawing::Point(380, 90);
+			this->Main_Activity_selector->Name = L"Activity_Selector";
+			this->Main_Activity_selector->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->Main_Activity_selector->Size = System::Drawing::Size(200, 25);
+			this->Main_Activity_selector->TabStop = false;
+			this->Main_Activity_selector->Items->AddRange(gcnew array<Object^>(6) { L" ", L"Quiz", L"Assignment", L"Sessional 1", L"Sessional 2", L"Final"});
+			this->Main_Activity_selector->SelectedIndexChanged += gcnew System::EventHandler(this, &Teacher::Main_Activity_Selected);
+			//
+			// Activity Number selector ComboBox
+			//
+			this->Activity_Number_selector->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Right | System::Windows::Forms::AnchorStyles::Top);
+			this->Activity_Number_selector->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->Activity_Number_selector->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->Activity_Number_selector->Font = (gcnew System::Drawing::Font(L"Segoe UI SemiBold", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Activity_Number_selector->Location = System::Drawing::Point(585, 90);
+			this->Activity_Number_selector->Name = L"Activity_Number_Selector";
+			this->Activity_Number_selector->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->Activity_Number_selector->Size = System::Drawing::Size(200, 25);
+			this->Activity_Number_selector->TabStop = false;
+			this->Activity_Number_selector->SelectedIndexChanged += gcnew System::EventHandler(this, &Teacher::Activity_Number_Selected);
+
+			//
+			// Sr_header
+			//
+			this->Sr_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Sr_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->Sr_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->Sr_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Sr_header->Location = System::Drawing::Point(20, 124);
+			this->Sr_header->Name = L"Sr_h";
+			this->Sr_header->Size = System::Drawing::Size(35, 25);
+			this->Sr_header->Text = L"Sr.";
+			this->Sr_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// ID_header
+			// 
+			this->ID_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->ID_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->ID_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->ID_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->ID_header->Location = System::Drawing::Point(this->Sr_header->Right + 5, this->Sr_header->Top);
+			this->ID_header->Name = L"ID_h";
+			this->ID_header->Size = System::Drawing::Size(100, 25);
+			this->ID_header->Text = L"ID";
+			this->ID_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// Name_header
+			// 
+			this->Name_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Name_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->Name_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->Name_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Name_header->Location = System::Drawing::Point(this->ID_header->Right + 5, this->ID_header->Top);
+			this->Name_header->Name = L"Name_h";
+			this->Name_header->Size = System::Drawing::Size(200, 25);
+			this->Name_header->Text = L"Student Name";
+			this->Name_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// Marks_header
+			// 
+			this->Marks_class_sum_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Marks_class_sum_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->Marks_class_sum_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->Marks_class_sum_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Marks_class_sum_header->Location = System::Drawing::Point(this->Name_header->Right + 5, this->Name_header->Top);
+			this->Marks_class_sum_header->Name = L"Marks_h";
+			this->Marks_class_sum_header->Size = System::Drawing::Size(200, 25);
+			this->Marks_class_sum_header->Text = L"Obtained Marks";
+			this->Marks_class_sum_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// Grade_header
+			// 
+			this->Grade_class_sum_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Grade_class_sum_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->Grade_class_sum_header->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->Grade_class_sum_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Grade_class_sum_header->Location = System::Drawing::Point(this->Marks_class_sum_header->Right + 5, this->Marks_class_sum_header->Top);
+			this->Grade_class_sum_header->Name = L"Grade_h";
+			this->Grade_class_sum_header->Size = System::Drawing::Size(200, 25);
+			this->Grade_class_sum_header->Text = L"Grade";
+			this->Grade_class_sum_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			if ( ! subjects_details[curr_sec][curr_subject].grading_enabled)
+				this->Grade_class_sum_header->Visible = false;
+
+			// 
+			// Serial labels
+			// 
+			for (int i = 0; i < Max_Students; i++) {
+				this->Sr_class_sum_l[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->Sr_class_sum_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				if ( i == 0 )
+					this->Sr_class_sum_l[i]->Location = System::Drawing::Point(this->Sr_header->Left, this->Sr_header->Bottom + 5);
+				else
+					this->Sr_class_sum_l[i]->Location = System::Drawing::Point(this->Sr_class_sum_l[i-1]->Left, this->Sr_class_sum_l[i - 1]->Bottom + 5);
+				this->Sr_class_sum_l[i]->Name = stoS("Sr_" + std::to_string(i + 1));
+				this->Sr_class_sum_l[i]->Size = System::Drawing::Size(35, 25);
+				this->Sr_class_sum_l[i]->Text = stoS(std::to_string(i + 1) + ')');
+				this->Sr_class_sum_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			}
+			//
+			// ID labels
+			//  
+			for (int i = 0; i < Max_Students; i++) {
+				this->ID_class_sum_l[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->ID_class_sum_l[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				this->ID_class_sum_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				if ( i == 0)
+					this->ID_class_sum_l[i]->Location = System::Drawing::Point(this->ID_header->Left, this->ID_header->Bottom + 5);
+				else
+					this->ID_class_sum_l[i]->Location = System::Drawing::Point(this->ID_class_sum_l[i-1]->Left, this->ID_class_sum_l[i-1]->Bottom + 5);
+				this->ID_class_sum_l[i]->Name = stoS("ID_" + std::to_string(i + 1));
+				this->ID_class_sum_l[i]->Size = System::Drawing::Size(100, 25);
+				this->ID_class_sum_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+				this->ID_class_sum_l[i]->Text = stoS(Student_marks[curr_sec][i].id);
+			}
+			//
+			// Name Labels
+			//
+			for (int i = 0; i < Max_Students; i++) {
+				this->Name_class_sum_l[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->Name_class_sum_l[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				this->Name_class_sum_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				if ( i == 0 )
+					this->Name_class_sum_l[i]->Location = System::Drawing::Point(this->Name_header->Left, this->Name_header->Bottom + 5);
+				else
+					this->Name_class_sum_l[i]->Location = System::Drawing::Point(this->Name_class_sum_l[i-1]->Left, this->Name_class_sum_l[i - 1]->Bottom + 5);
+				this->Name_class_sum_l[i]->Name = stoS("Name_" + std::to_string(i + 1));
+				this->Name_class_sum_l[i]->Size = System::Drawing::Size(200, 25);
+				this->Name_class_sum_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+				this->Name_class_sum_l[i]->Text = stoS(Student_marks[curr_sec][i].name);
+			}
+			//
+			// Marks Labels
+			//
+			for (int i = 0; i < Max_Students; i++) {
+				this->Marks_class_sum_l[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->Marks_class_sum_l[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				this->Marks_class_sum_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				if ( i == 0 )
+					this->Marks_class_sum_l[i]->Location = System::Drawing::Point(this->Marks_class_sum_header->Left, this->Marks_class_sum_header->Bottom + 5);
+				else
+					this->Marks_class_sum_l[i]->Location = System::Drawing::Point(this->Marks_class_sum_l[i - 1]->Left, this->Marks_class_sum_l[i-1]->Bottom + 5);
+				this->Marks_class_sum_l[i]->Name = stoS("Marks_" + std::to_string(i + 1));
+				this->Marks_class_sum_l[i]->Size = System::Drawing::Size(200, 25);
+				this->Marks_class_sum_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			}
+			//
+			// Grade Labels
+			//
+			for (int i = 0; i < Max_Students; i++) {
+				this->Grade_class_sum_l[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->Grade_class_sum_l[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				this->Grade_class_sum_l[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(0)));
+				if (i == 0)
+					this->Grade_class_sum_l[i]->Location = System::Drawing::Point(this->Grade_class_sum_header->Left, this->Grade_class_sum_header->Bottom + 5);
+				else
+					this->Grade_class_sum_l[i]->Location = System::Drawing::Point(this->Grade_class_sum_l[i - 1]->Left, this->Grade_class_sum_l[i - 1]->Bottom + 5);
+				this->Grade_class_sum_l[i]->Name = stoS("Grade_" + std::to_string(i + 1));
+				this->Grade_class_sum_l[i]->Size = System::Drawing::Size(200, 25);
+				this->Grade_class_sum_l[i]->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+				this->Grade_class_sum_l[i]->Text = stoS(Student_marks[curr_sec][curr_subject].grade[curr_subject]);
+				if (subjects_details[curr_sec][curr_subject].grading_enabled != true)
+					this->Grade_class_sum_l[i]->Visible = false;
+			}
+
+
+			//
+			// Class Summary
+			//
+			this->AutoScroll = true;
+			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->ClientSize = System::Drawing::Size(800, 450);
+			
+			this->Controls->Add(this->Summary_header);
+			this->Controls->Add(this->Back_from_class_sum_button);
+			this->Controls->Add(this->Main_Activity_selector);
+			this->Controls->Add(this->Activity_Number_selector);
+			this->Controls->Add(this->Sr_header);
+			this->Controls->Add(this->ID_header);
+			this->Controls->Add(this->Name_header);
+			this->Controls->Add(this->Marks_class_sum_header);
+			this->Controls->Add(this->Grade_class_sum_header);
+			this->Controls->AddRange(this->Sr_class_sum_l);
+			this->Controls->AddRange(this->Name_class_sum_l);
+			this->Controls->AddRange(this->ID_class_sum_l);
+			this->Controls->AddRange(this->Marks_class_sum_l);
+			this->Controls->AddRange(this->Grade_class_sum_l);
+			
+			this->Text = L"Class Summary";
+			this->Name = L"Class_Summary";
+			
+			this->ResumeLayout(false);
+			this->PerformLayout();
+		}
+		// Class Summary - end
 
 		// Exam Type - start
 		void InitializeComponent_ExamType(void)
@@ -452,7 +745,7 @@ namespace MSP {
 		}
 		// Exam Type - end
 
-		// Assignment selector - start
+		// Activity selector - start
 		void InitializeComponent_ActivitySelector(void)
 		{
 			// Keep track of the tab index
@@ -612,7 +905,7 @@ namespace MSP {
 			this->PerformLayout();
 
 		}
-		// Assignment selector - end
+		// Activity selector - end
 
 		// Marksheet  - start
 		void InitializeComponent_Marksheet(void)
@@ -1330,6 +1623,12 @@ namespace MSP {
 		InitializeComponent_AttendanceManager();
 		this->Show();
 	}
+	private: System::Void Class_sum_button_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Controls->Clear();
+		this->Hide();
+		InitializeComponent_ClassSummary();
+		this->Show();
+	}
 	private: System::Void Calculate_Grades_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		// Calculate grades according to the grading type set for the subject
 		// If the grading type is not relative or absolute, let the user know
@@ -1357,6 +1656,64 @@ namespace MSP {
 
 	}
 	// Operation_selector - functions - end 
+
+	// Class Summary - functions - start
+	private: System::Void Main_Activity_Selected(System::Object^ sender, System::EventArgs^ e) {
+		if (this->Main_Activity_selector->SelectedIndex == -1)
+			return;
+
+		exam_type = this->Main_Activity_selector->SelectedIndex - 1;
+		
+		for (int i = 0; i < Max_Students; i++)
+			this->Marks_class_sum_l[i]->Text = " ";
+
+		this->Activity_Number_selector->Items->Clear();
+		
+		if (exam_type == Exam_quiz)
+			for (int i = 0; i < saved.quizzes[curr_subject][curr_sec]; i++)
+				this->Activity_Number_selector->Items->Add("Quiz " + (i + 1).ToString());
+		else if (exam_type == Exam_assignment)
+			for (int i = 0; i < saved.assignments[curr_subject][curr_sec]; i++)
+				this->Activity_Number_selector->Items->Add("Assignment " + (i + 1).ToString());
+		else if (exam_type == Exam_mid1)
+		{
+			this->Activity_Number_selector->Text = "---";
+			for (int i = 0; i < Max_Students; i++)
+				this->Marks_class_sum_l[i]->Text = stoS(to_string_with_precision(Student_marks[curr_sec][i].mid1[curr_subject], 2));
+		}
+		else if (exam_type == Exam_mid2)
+		{
+			this->Activity_Number_selector->Text = "---";
+			for (int i = 0; i < Max_Students; i++)
+				this->Marks_class_sum_l[i]->Text = stoS(to_string_with_precision(Student_marks[curr_sec][i].mid2[curr_subject], 2));
+		}
+		else if (exam_type == Exam_final)
+		{
+			this->Activity_Number_selector->Text = "---";
+			for (int i = 0; i < Max_Students; i++)
+				this->Marks_class_sum_l[i]->Text = stoS(to_string_with_precision(Student_marks[curr_sec][i].final[curr_subject], 2));
+		}
+	}
+	private: System::Void Activity_Number_Selected(System::Object^ sender, System::EventArgs^ e) {
+		if (this->Activity_Number_selector->SelectedIndex == -1)
+			return;
+
+		int exam_number = this->Activity_Number_selector->SelectedIndex;
+
+		for (int i = 0; i < Max_Students; i++)
+			this->Marks_class_sum_l[i]->Text = " ";
+		
+		if (exam_type == Exam_quiz)
+			for (int i = 0; i < Max_Students; i++)
+				this->Marks_class_sum_l[i]->Text = stoS(to_string_with_precision(Student_marks[curr_sec][i].quizzes[curr_subject][exam_number]));
+		else if (exam_type == Exam_assignment)
+			for (int i = 0; i < Max_Students; i++)
+				this->Marks_class_sum_l[i]->Text = stoS(to_string_with_precision(Student_marks[curr_sec][i].assignment[curr_subject][exam_number]));
+
+
+	}
+
+	// Class Summary = functions - end
 
 	// Exam_type - functions - start
 	private: System::Void Quiz_button_Click(System::Object^ sender, System::EventArgs^ e) {
