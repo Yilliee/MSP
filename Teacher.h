@@ -335,7 +335,7 @@ namespace MSP {
 			this->Exam_type_header->ForeColor = System::Drawing::SystemColors::Desktop;
 			this->Exam_type_header->Location = System::Drawing::Point(12, 9);
 			this->Exam_type_header->Name = L"Exam_type_header";
-			this->Exam_type_header->Size = System::Drawing::Size(676, 82);
+			this->Exam_type_header->Size = System::Drawing::Size(676, 60);
 			this->Exam_type_header->Text = L"Select Exam type:";
 			this->Exam_type_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
@@ -346,9 +346,9 @@ namespace MSP {
 			this->Quiz_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Quiz_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold));
 			this->Quiz_button->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->Quiz_button->Location = System::Drawing::Point(250, 142);
+			this->Quiz_button->Location = System::Drawing::Point(250, 100);
 			this->Quiz_button->Name = L"Quiz_button";
-			this->Quiz_button->Size = System::Drawing::Size(200, 25);
+			this->Quiz_button->Size = System::Drawing::Size(200, 27);
 			this->Quiz_button->TabIndex = tab_index++;
 			this->Quiz_button->Text = L"Quiz";
 			this->Quiz_button->UseVisualStyleBackColor = false;
@@ -361,9 +361,9 @@ namespace MSP {
 			this->Assignment_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Assignment_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold));
 			this->Assignment_button->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->Assignment_button->Location = System::Drawing::Point(250, 197);
+			this->Assignment_button->Location = System::Drawing::Point(250, 155);
 			this->Assignment_button->Name = L"Assigment_button";
-			this->Assignment_button->Size = System::Drawing::Size(200, 25);
+			this->Assignment_button->Size = System::Drawing::Size(200, 27);
 			this->Assignment_button->TabIndex = tab_index++;
 			this->Assignment_button->Text = L"Assignment";
 			this->Assignment_button->UseVisualStyleBackColor = false;
@@ -376,9 +376,9 @@ namespace MSP {
 			this->Mid_1_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Mid_1_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold));
 			this->Mid_1_button->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->Mid_1_button->Location = System::Drawing::Point(250, 252);
+			this->Mid_1_button->Location = System::Drawing::Point(250, 210);
 			this->Mid_1_button->Name = L"Mid_1_button";
-			this->Mid_1_button->Size = System::Drawing::Size(200, 25);
+			this->Mid_1_button->Size = System::Drawing::Size(200, 27);
 			this->Mid_1_button->TabIndex = tab_index++;
 			this->Mid_1_button->Text = L"Midterm # 1";
 			this->Mid_1_button->UseVisualStyleBackColor = false;
@@ -392,9 +392,9 @@ namespace MSP {
 			this->Mid_2_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Mid_2_button->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->Mid_2_button->Location = System::Drawing::Point(250, 307);
+			this->Mid_2_button->Location = System::Drawing::Point(250, 265);
 			this->Mid_2_button->Name = L"Mid_2_button";
-			this->Mid_2_button->Size = System::Drawing::Size(200, 25);
+			this->Mid_2_button->Size = System::Drawing::Size(200, 27);
 			this->Mid_2_button->TabIndex = tab_index++;
 			this->Mid_2_button->Text = L"Midterm # 2";
 			this->Mid_2_button->UseVisualStyleBackColor = false;
@@ -408,9 +408,9 @@ namespace MSP {
 			this->Final_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Final_button->ForeColor = System::Drawing::SystemColors::Desktop;
-			this->Final_button->Location = System::Drawing::Point(250, 362);
+			this->Final_button->Location = System::Drawing::Point(250, 320);
 			this->Final_button->Name = L"Final_button";
-			this->Final_button->Size = System::Drawing::Size(200, 25);
+			this->Final_button->Size = System::Drawing::Size(200, 27);
 			this->Final_button->TabIndex = tab_index++;
 			this->Final_button->Text = L"Final";
 			this->Final_button->UseVisualStyleBackColor = false;
@@ -423,9 +423,9 @@ namespace MSP {
 			this->Back_from_Examtype_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Back_from_Examtype_button->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Back_from_Examtype_button->Location = System::Drawing::Point(250, 417);
+			this->Back_from_Examtype_button->Location = System::Drawing::Point(250, 375);
 			this->Back_from_Examtype_button->Name = L"Back_to_home_del";
-			this->Back_from_Examtype_button->Size = System::Drawing::Size(200, 25);
+			this->Back_from_Examtype_button->Size = System::Drawing::Size(200, 27);
 			this->Back_from_Examtype_button->TabIndex = tab_index++;
 			this->Back_from_Examtype_button->Text = L"Go Back to home";
 			this->Back_from_Examtype_button->UseVisualStyleBackColor = false;
