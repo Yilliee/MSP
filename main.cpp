@@ -1,7 +1,13 @@
 #include "Login.h"
+#include <Windows.h>
+#include <string>
+#include "variables.h"
+#include "functions.h"
 
 using namespace MSP;
+
 using std::ifstream;
+using System::Windows::Forms::Application;
 
 void read_data_from_files(void);
 void fix_exceptions(void);

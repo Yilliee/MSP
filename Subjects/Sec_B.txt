@@ -1,5 +1,5 @@
-CS1002	Programming Fundamentals	0	0	0	0	0	0	Absolute
-NS1001	Applied Physics	1	0	0	0	0	0	Relative
-MT1003	Calculus and Analytical Geometry	2	0	0	0	0	0	Relative
-CL1000	Introduction to Information and Communication Technology	3	0	0	0	0	0	Absolute
-SS1004	English Composition and Comprehension	4	0	0	0	0	0	Relative
+CS1002	Programming Fundamentals	0	0	0	0	0	0	0	Absolute
+NS1001	Applied Physics	1	0	0	0	0	0	0	Relative
+MT1003	Calculus and Analytical Geometry	2	0	0	0	0	0	0	Relative
+CL1000	Introduction to Information and Communication Technology	3	0	0	0	0	0	0	Absolute
+SS1004	English Composition and Comprehension	4	0	0	0	0	0	0	Relative

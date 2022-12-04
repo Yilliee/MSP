@@ -1,12 +1,16 @@
 #pragma once
-#include "variables.h"
-#include "functions.h"
+
 #include "Admin.h"
 #include "Teacher.h"
 #include "Student.h"
 
-namespace MSP {
+#include "variables.h"
+#include "functions.h"
 
+#include <string>
+
+namespace MSP {
+	
 	/// <summary>
 	/// Summary for Login
 	/// </summary>
@@ -30,13 +34,9 @@ namespace MSP {
 			}
 		}
 
-	private: Label^ Login_Header;
-	private: Label^ Username_label;
-	private: Label^ Password_label;
-	private: TextBox^ Username_textbox;
-
-	private: TextBox^ Password_textbox;
-	private: Button^ Login_button;
+	private: System::Windows::Forms::Label ^Login_Header, ^Username_label, ^Password_label;
+	private: System::Windows::Forms::TextBox ^Username_textbox, ^Password_textbox;
+	private: System::Windows::Forms::Button ^Login_button;
 
 	private:
 		/// <summary>
@@ -47,19 +47,20 @@ namespace MSP {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Login::typeid));
-			this->Login_Header = (gcnew Label());
-			this->Username_label = (gcnew Label());
-			this->Password_label = (gcnew Label());
-			this->Username_textbox = (gcnew TextBox());
-			this->Password_textbox = (gcnew TextBox());
-			this->Login_button = (gcnew Button());
+			// Call the default constructors of each type
+			this->Login_Header = (gcnew System::Windows::Forms::Label());
+			this->Username_label = (gcnew System::Windows::Forms::Label());
+			this->Password_label = (gcnew System::Windows::Forms::Label());
+			this->Username_textbox = (gcnew System::Windows::Forms::TextBox());
+			this->Password_textbox = (gcnew System::Windows::Forms::TextBox());
+			this->Login_button = (gcnew System::Windows::Forms::Button());
 			
 			this->SuspendLayout();
 			
 			// 
 			// Login_Header
 			// 
-			this->Login_Header->Anchor = AnchorStyles::Top;
+			this->Login_Header->Anchor = System::Windows::Forms::AnchorStyles::Top;
 			this->Login_Header->BackColor = System::Drawing::SystemColors::ControlLightLight;
 			this->Login_Header->Font = (gcnew System::Drawing::Font(L"Times New Roman", 20.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -72,31 +73,31 @@ namespace MSP {
 			// 
 			// Username_label
 			// 
-			this->Username_label->Anchor = AnchorStyles::None;
+			this->Username_label->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Username_label->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Username_label->Location = System::Drawing::Point(180, 185);
 			this->Username_label->Name = L"Username_label";
 			this->Username_label->Size = System::Drawing::Size(100, 25);
-			this->Username_label->TextAlign = ContentAlignment::MiddleLeft;
+			this->Username_label->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->Username_label->Text = L"Username : ";
 			// 
 			// Password_label
 			// 
-			this->Password_label->Anchor = AnchorStyles::None;
+			this->Password_label->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Password_label->Font = (gcnew System::Drawing::Font(L"Times New Roman", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Password_label->Location = System::Drawing::Point(180, 225);
 			this->Password_label->Name = L"Password_label";
 			this->Password_label->Size = System::Drawing::Size(100, 25);
-			this->Password_label->TextAlign = ContentAlignment::MiddleLeft;
+			this->Password_label->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
 			this->Password_label->Text = L"Password : ";
 			// 
 			// Username_textbox
 			// 
-			this->Username_textbox->Anchor = AnchorStyles::None;
+			this->Username_textbox->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Username_textbox->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->Username_textbox->Cursor = Cursors::IBeam;
+			this->Username_textbox->Cursor = System::Windows::Forms::Cursors::IBeam;
 			this->Username_textbox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Username_textbox->Location = System::Drawing::Point(290, 185);
@@ -104,11 +105,11 @@ namespace MSP {
 			this->Username_textbox->Name = L"Username_textbox";
 			this->Username_textbox->Size = System::Drawing::Size(250, 25);
 			this->Username_textbox->TabIndex = 3;
-			this->Username_textbox->TextAlign = HorizontalAlignment::Center;
+			this->Username_textbox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			// 
 			// Password_textbox
 			// 
-			this->Password_textbox->Anchor = AnchorStyles::None;
+			this->Password_textbox->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->Password_textbox->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->Password_textbox->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -117,13 +118,13 @@ namespace MSP {
 			this->Password_textbox->Name = L"Password_textbox";
 			this->Password_textbox->Size = System::Drawing::Size(250, 25);
 			this->Password_textbox->TabIndex = 4;
-			this->Password_textbox->TextAlign = HorizontalAlignment::Center;
+			this->Password_textbox->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->Password_textbox->UseSystemPasswordChar = true;
 			// 
 			// Login_button
 			// 
-			this->Login_button->Anchor = AnchorStyles::None;
-			this->Login_button->FlatStyle = FlatStyle::Popup;
+			this->Login_button->Anchor = System::Windows::Forms::AnchorStyles::None;
+			this->Login_button->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Login_button->Font = (gcnew System::Drawing::Font(L"Segoe UI SemiBold", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->Login_button->Location = System::Drawing::Point(290, 265);
@@ -154,19 +155,28 @@ namespace MSP {
 		}
 
 	private: System::Void Login_button_Click(System::Object^ sender, System::EventArgs^ e) {
-		std::string username = Stos(Username_textbox->Text);
-		std::string pass = Stos(Password_textbox->Text);
+		// Get the username and password from the respective textboxes
+		std::string username = Stos(this->Username_textbox->Text);
+		std::string pass = Stos(this->Password_textbox->Text);
 
-		for (int i = 0; i < saved.sections; i++) {
-			if (username != "" && pass != "") student_no = authenticate(username, pass, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
+		// If both the username and password are not empty the try matching the credentials with the student
+		// database, the teacher database and the admin database one by one
+		if (username != "" && pass != ""){
+
+			for (int i = 0; i < saved.sections; i++) {
+				student_no = authenticate(username, pass, Stu_Cred[i], sizeof(Stu_Cred[i]) / sizeof(*Stu_Cred[i]));
 			
-			if (student_no != -1) {
-				curr_sec = i;
-				break;
+				if (student_no != -1) {
+					curr_sec = i;
+					break;
+				}
+			}
+			if (student_no == -1) {
+				teach_no = authenticate(username, pass, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
+				if (teach_no == -1)
+					admin_no = authenticate(username, pass, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 			}
 		}
-		teach_no = authenticate(username, pass, Teach_Cred, sizeof(Teach_Cred) / sizeof(*Teach_Cred));
-		admin_no = authenticate(username, pass, Admin_Cred, sizeof(Admin_Cred) / sizeof(*Admin_Cred));
 		if (admin_no != -1 || (No_Admin_Cred_available && username == Default_Admin_Cred.username && pass == Default_Admin_Cred.pass) ){
 			// Open admin home page
 			Admin ahp;
@@ -175,7 +185,7 @@ namespace MSP {
 			ahp.ShowDialog();
 			this->Close();
 		}
-		if (student_no != -1) {
+		else if (student_no != -1) {
 			// Open stu home page
 			Student shp;
 			// Hide the currrent winform, open the new one and then close the old one.
@@ -192,8 +202,7 @@ namespace MSP {
 			this->Close();
 
 		}
-		
-		else MessageBox::Show("Incorrect Email or Password.");
+		else System::Windows::Forms::MessageBox::Show("Incorrect Email or Password.");
 	}
 };
 }
