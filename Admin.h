@@ -47,9 +47,9 @@ namespace MSP {
 
 	// Credentials_manager - items - start
 	private: array<System::Windows::Forms::Label^> ^Sr_Cred_l;
-	private: array<System::Windows::Forms::TextBox^> ^ID_Cred_tb, ^Name_Cred_tb, ^Email_Cred_tb, ^Pass_Cred_tb;
+	private: array<System::Windows::Forms::TextBox^> ^ID_Cred_tb, ^Name_Cred_tb, ^Username_Cred_tb, ^Pass_Cred_tb;
 
-	private: System::Windows::Forms::Label ^Mgmt_header, ^Email_Cred_header, ^Pass_Cred_header;
+	private: System::Windows::Forms::Label ^Mgmt_header, ^Username_Cred_header, ^Pass_Cred_header;
 	private: System::Windows::Forms::Button ^Save_button_Cred, ^Back_from_Cred_button;
 	// Credentials_manager - items - end
 
@@ -370,20 +370,20 @@ namespace MSP {
 			this->Sr_header = (gcnew System::Windows::Forms::Label());
 			this->ID_header = (gcnew System::Windows::Forms::Label());
 			this->Name_header = (gcnew System::Windows::Forms::Label());
-			this->Email_Cred_header = (gcnew System::Windows::Forms::Label());
+			this->Username_Cred_header = (gcnew System::Windows::Forms::Label());
 			this->Pass_Cred_header = (gcnew System::Windows::Forms::Label());
 
 			this->Sr_Cred_l = gcnew array<System::Windows::Forms::Label^>(Absolute_Max_sizes[mode]);
 			this->ID_Cred_tb = gcnew array<System::Windows::Forms::TextBox^>(Absolute_Max_sizes[mode]);;
 			this->Name_Cred_tb = gcnew array<System::Windows::Forms::TextBox^>(Absolute_Max_sizes[mode]);;
-			this->Email_Cred_tb = gcnew array<System::Windows::Forms::TextBox^>(Absolute_Max_sizes[mode]);;
+			this->Username_Cred_tb = gcnew array<System::Windows::Forms::TextBox^>(Absolute_Max_sizes[mode]);;
 			this->Pass_Cred_tb = gcnew array<System::Windows::Forms::TextBox^>(Absolute_Max_sizes[mode]);;
 
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
 				this->Sr_Cred_l[i] = gcnew System::Windows::Forms::Label();
 				this->ID_Cred_tb[i] = gcnew System::Windows::Forms::TextBox();
 				this->Name_Cred_tb[i] = gcnew System::Windows::Forms::TextBox();
-				this->Email_Cred_tb[i] = gcnew System::Windows::Forms::TextBox();
+				this->Username_Cred_tb[i] = gcnew System::Windows::Forms::TextBox();
 				this->Pass_Cred_tb[i] = gcnew System::Windows::Forms::TextBox();
 			}
 
@@ -488,18 +488,18 @@ namespace MSP {
 			this->Name_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 			// 
-			// Email_header
+			// Username_header
 			// 
-			this->Email_Cred_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
-			this->Email_Cred_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->Email_Cred_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
-			this->Email_Cred_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->Username_Cred_header->Anchor = System::Windows::Forms::AnchorStyles::Top;
+			this->Username_Cred_header->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->Username_Cred_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
+			this->Username_Cred_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Email_Cred_header->Location = System::Drawing::Point(this->Name_header->Left + this->Name_header->Width + 5, this->Name_header->Top);
-			this->Email_Cred_header->Name = L"Email_h";
-			this->Email_Cred_header->Size = System::Drawing::Size(200, 25);
-			this->Email_Cred_header->Text = L"Email";
-			this->Email_Cred_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->Username_Cred_header->Location = System::Drawing::Point(this->Name_header->Left + this->Name_header->Width + 5, this->Name_header->Top);
+			this->Username_Cred_header->Name = L"Username_h";
+			this->Username_Cred_header->Size = System::Drawing::Size(200, 25);
+			this->Username_Cred_header->Text = L"Username";
+			this->Username_Cred_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// Pass_header
 			// 
@@ -508,7 +508,7 @@ namespace MSP {
 			this->Pass_Cred_header->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->Pass_Cred_header->Font = (gcnew System::Drawing::Font(L"Segoe UI", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Pass_Cred_header->Location = System::Drawing::Point(this->Email_Cred_header->Left + this->Email_Cred_header->Width + 5, 93);
+			this->Pass_Cred_header->Location = System::Drawing::Point(this->Username_Cred_header->Left + this->Username_Cred_header->Width + 5, 93);
 			this->Pass_Cred_header->Name = L"Pass_h";
 			this->Pass_Cred_header->Size = System::Drawing::Size(200, 25);
 			this->Pass_Cred_header->Text = L"Password";
@@ -567,22 +567,22 @@ namespace MSP {
 				this->Name_Cred_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			}
 			//
-			// Email
+			// Username
 			//
 			for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-				this->Email_Cred_tb[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
-				this->Email_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
-				this->Email_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				this->Username_Cred_tb[i]->Anchor = System::Windows::Forms::AnchorStyles::Top;
+				this->Username_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
+				this->Username_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				this->Email_Cred_tb[i]->Left = this->Name_Cred_tb[i]->Left + this->Name_Cred_tb[i]->Width + 5;
+				this->Username_Cred_tb[i]->Left = this->Name_Cred_tb[i]->Left + this->Name_Cred_tb[i]->Width + 5;
 				if ( i == 0 )
-					this->Email_Cred_tb[i]->Top = 124;
+					this->Username_Cred_tb[i]->Top = 124;
 				else
-					this->Email_Cred_tb[i]->Top = this->Email_Cred_tb[i-1]->Bottom + 6;
-				this->Email_Cred_tb[i]->Name = "Name_" + (i + 1).ToString();
-				this->Email_Cred_tb[i]->Size = System::Drawing::Size(200, 25);
-				this->Email_Cred_tb[i]->TabIndex = tab_index++;
-				this->Email_Cred_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
+					this->Username_Cred_tb[i]->Top = this->Username_Cred_tb[i-1]->Bottom + 6;
+				this->Username_Cred_tb[i]->Name = "Name_" + (i + 1).ToString();
+				this->Username_Cred_tb[i]->Size = System::Drawing::Size(200, 25);
+				this->Username_Cred_tb[i]->TabIndex = tab_index++;
+				this->Username_Cred_tb[i]->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			}
 			//
 			// Pass
@@ -592,7 +592,7 @@ namespace MSP {
 				this->Pass_Cred_tb[i]->BackColor = System::Drawing::Color::WhiteSmoke;
 				this->Pass_Cred_tb[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				this->Pass_Cred_tb[i]->Left = this->Email_Cred_tb[i]->Left + this->Email_Cred_tb[i]->Width + 5;
+				this->Pass_Cred_tb[i]->Left = this->Username_Cred_tb[i]->Left + this->Username_Cred_tb[i]->Width + 5;
 				if (i == 0)
 					this->Pass_Cred_tb[i]->Top = 124;
 				else
@@ -615,14 +615,14 @@ namespace MSP {
 			this->Controls->Add(this->Sr_header);
 			this->Controls->Add(this->ID_header);
 			this->Controls->Add(this->Name_header);
-			this->Controls->Add(this->Email_Cred_header);
+			this->Controls->Add(this->Username_Cred_header);
 			this->Controls->Add(this->Pass_Cred_header);
 			this->Controls->Add(this->Save_button_Cred);
 			this->Controls->Add(this->Back_from_Cred_button);
 			this->Controls->AddRange(this->Sr_Cred_l);
 			this->Controls->AddRange(this->ID_Cred_tb);
 			this->Controls->AddRange(this->Name_Cred_tb);
-			this->Controls->AddRange(this->Email_Cred_tb);
+			this->Controls->AddRange(this->Username_Cred_tb);
 			this->Controls->AddRange(this->Pass_Cred_tb);
 			if (mode == STU) {
 				this->Name = L"Student_management";
@@ -1134,6 +1134,80 @@ namespace MSP {
 	
 	// Save functions
 	private: System::Void Save_button_Cred_Click(System::Object^ sender, System::EventArgs^ e) {
+		// Make sure that there is at least 1 user with all details filled
+		bool all_empty = true;
+		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+			if (this->ID_Cred_tb[i]->Text != "" && this->Name_Cred_tb[i]->Text != "" && this->Pass_Cred_tb[i]->Text != "" && this->Username_Cred_tb[i]->Text != "") {
+				all_empty = false;
+				break;
+			}
+		}
+		if (all_empty) {
+			System::Windows::Forms::MessageBox::Show("No user has properly filled entries! Aborting...");
+			return;
+		}
+		
+		// Make sure that the password is atleast 4 characters or let the user know and abort the saving process
+		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+			if (this->Pass_Cred_tb[i]->TextLength < 4) {
+				System::Windows::Forms::MessageBox::Show("Passwords should be atleast 4 characters each. Aborting the saving process...\nFirst offending entry : Sr." + i.ToString());
+				return;
+			}
+		}
+		// Make sure that the ID or Username do not contain spaces or let the user know and abort the saving process
+		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+			if (this->ID_Cred_tb[i]->Text->Contains(" ") ) {
+				System::Windows::Forms::MessageBox::Show("ID cannot contain spaces. Aborting...\nFirst offending entry : Sr." + i.ToString());
+				return;
+			}
+			else if (this->Username_Cred_tb[i]->Text->Contains(" ")) {
+				System::Windows::Forms::MessageBox::Show("Username cannot contain spaces. Aborting...\nFirst offending entry : Sr." + i.ToString());
+				return;
+			}
+		}
+
+		// Check for duplicates
+		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
+			for ( int j = 0; j < saved.sections; j++){
+				for (int k = 0; k < Max_Students; k++) {
+					if (mode == STU && j == curr_sec && k == i)
+						continue;
+					if ( this->ID_Cred_tb[i]->Text == stoS(Stu_Cred[j][k].id) && Stu_Cred[j][k].id != "") {
+						System::Windows::Forms::MessageBox::Show("ID of Sr." + i.ToString() + "matches with another ID. Aborting...");
+						return;
+					}
+					else if (this->Username_Cred_tb[i]->Text == stoS(Stu_Cred[j][k].username) && Stu_Cred[j][k].username != ""){
+						System::Windows::Forms::MessageBox::Show("Username of Sr." + i.ToString() + "matches with another username. Aborting...");
+						return;
+					}
+				}
+			}
+			for (int j = 0; j < Max_Teachers; j++) {
+				if (mode == TEACH && j == i)
+					continue;
+				if (this->ID_Cred_tb[i]->Text == stoS(Teach_Cred[j].id) && Teach_Cred[j].id != "") {
+					System::Windows::Forms::MessageBox::Show("ID of Sr." + i.ToString() + "matches with another ID. Aborting...");
+					return;
+				}
+				else if (this->Username_Cred_tb[i]->Text == stoS(Teach_Cred[j].username) && Teach_Cred[j].username != "") {
+					System::Windows::Forms::MessageBox::Show("Username of Sr." + i.ToString() + "matches with another username. Aborting...");
+					return;
+				}
+			}
+			for (int j = 0; j < Max_Admins; j++) {
+				if (mode == ADMIN && j == i)
+					continue;
+				if (this->ID_Cred_tb[i]->Text == stoS(Admin_Cred[j].id) && Admin_Cred[j].id != "") {
+					System::Windows::Forms::MessageBox::Show("ID of Sr." + i.ToString() + "matches with another ID. Aborting...");
+					return;
+				}
+				else if (this->Username_Cred_tb[i]->Text == stoS(Admin_Cred[j].username) && Admin_Cred[j].username != "") {
+					System::Windows::Forms::MessageBox::Show("Username of Sr." + i.ToString() + "matches with another username. Aborting...");
+					return;
+				}
+			}
+		}
+
 		// Create a pointer to the appropraite credential array so we don't have to add tons of if checks
 		credentials* Cred;
 		if (mode == STU)
@@ -1143,15 +1217,20 @@ namespace MSP {
 		else if (mode == ADMIN)
 			Cred = &Admin_Cred[0];
 		for (int i = 0; i < Absolute_Max_sizes[mode]; i++) {
-			// Make sure that the password is atleast 4 characters or let the user know and abort the saving process
-			if (this->Pass_Cred_tb[i]->TextLength < 4) {
-				System::Windows::Forms::MessageBox::Show("Passwords should be atleast 4 characters each. Aborting the saving process...\nFirst offending entry : Sr." + i.ToString());
-				return;
+			// If any entry of a serial number is null then store null values for all 4 for that specific serial number
+			if (this->ID_Cred_tb[i]->Text == "" || this->Name_Cred_tb[i]->Text == "" || this->Username_Cred_tb[i]->Text == "" || this->Pass_Cred_tb[i]->Text == ""){
+				System::Windows::Forms::MessageBox::Show("One of the entries of Sr." + (i+1).ToString() + " is empty. Storing null values for all 4");
+				Cred[i].id = "";
+				Cred[i].name = "";
+				Cred[i].username = "";
+				Cred[i].pass = "";
 			}
-			Cred[i].id = Stos(this->ID_Cred_tb[i]->Text);
-			Cred[i].name = Stos(this->Name_Cred_tb[i]->Text);
-			Cred[i].username = Stos(this->Email_Cred_tb[i]->Text);
-			Cred[i].pass = Stos(this->Pass_Cred_tb[i]->Text);
+			else {
+				Cred[i].id = Stos(this->ID_Cred_tb[i]->Text);
+				Cred[i].name = Stos(this->Name_Cred_tb[i]->Text);
+				Cred[i].username = Stos(this->Username_Cred_tb[i]->Text);
+				Cred[i].pass = Stos(this->Pass_Cred_tb[i]->Text);
+			}
 			if (mode == STU) {
 				Student_marks[curr_sec][i].id = Cred[i].id;
 				Student_marks[curr_sec][i].name = Cred[i].name;
@@ -1426,7 +1505,7 @@ namespace MSP {
 				tmp = Teach_Cred[i];
 			this->ID_Cred_tb[i]->Text = stoS(tmp.id);
 			this->Name_Cred_tb[i]->Text = stoS(tmp.name);
-			this->Email_Cred_tb[i]->Text = stoS(tmp.username);
+			this->Username_Cred_tb[i]->Text = stoS(tmp.username);
 			this->Pass_Cred_tb[i]->Text = stoS(tmp.pass);
 		}
 	}

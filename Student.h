@@ -32,7 +32,7 @@ namespace MSP {
 
 	// Student_homepage - items - start
 	private: System::Windows::Forms::Label ^Student_hp_header, ^Background_info_hp, ^Student_hp_subheader, ^Name_subheader, 
-											^Name_l, ^ID_subheader, ^ID_l, ^Sec_subheader, ^Sec_l, ^Email_subheader, ^Email_l;
+											^Name_l, ^ID_subheader, ^ID_l, ^Sec_subheader, ^Sec_l, ^Username_subheader, ^Username_l;
 	// Student_homepage - items - end
 
 	// Menu - items - start
@@ -85,8 +85,8 @@ namespace MSP {
 			this->ID_l = (gcnew System::Windows::Forms::Label());
 			this->Sec_subheader = (gcnew System::Windows::Forms::Label());
 			this->Sec_l = (gcnew System::Windows::Forms::Label());
-			this->Email_subheader = (gcnew System::Windows::Forms::Label());
-			this->Email_l = (gcnew System::Windows::Forms::Label());
+			this->Username_subheader = (gcnew System::Windows::Forms::Label());
+			this->Username_l = (gcnew System::Windows::Forms::Label());
 
 			this->SuspendLayout();
 
@@ -187,26 +187,26 @@ namespace MSP {
 			this->Sec_l->Size = System::Drawing::Size(288, 23);
 			this->Sec_l->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
-			// Email_subheader
+			// Username_subheader
 			// 
-			this->Email_subheader->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->Username_subheader->Font = (gcnew System::Drawing::Font(L"Segoe UI Semibold", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Email_subheader->Location = System::Drawing::Point(159, 327);
-			this->Email_subheader->Name = L"Email_subheader";
-			this->Email_subheader->Size = System::Drawing::Size(106, 23);
-			this->Email_subheader->Text = L"Email :";
-			this->Email_subheader->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->Username_subheader->Location = System::Drawing::Point(159, 327);
+			this->Username_subheader->Name = L"Username_subheader";
+			this->Username_subheader->Size = System::Drawing::Size(106, 23);
+			this->Username_subheader->Text = L"Username :";
+			this->Username_subheader->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
-			// Email_l
+			// Username_l
 			// 
-			this->Email_l->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+			this->Username_l->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->Email_l->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->Username_l->Font = (gcnew System::Drawing::Font(L"Segoe UI", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->Email_l->Location = System::Drawing::Point(289, 327);
-			this->Email_l->Name = L"Email_l";
-			this->Email_l->Size = System::Drawing::Size(288, 23);
-			this->Email_l->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->Username_l->Location = System::Drawing::Point(289, 327);
+			this->Username_l->Name = L"Username_l";
+			this->Username_l->Size = System::Drawing::Size(288, 23);
+			this->Username_l->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 			// 
 			// Student
@@ -223,8 +223,8 @@ namespace MSP {
 			this->Controls->Add(this->ID_l);
 			this->Controls->Add(this->Sec_subheader);
 			this->Controls->Add(this->Sec_l);
-			this->Controls->Add(this->Email_l);
-			this->Controls->Add(this->Email_subheader);
+			this->Controls->Add(this->Username_l);
+			this->Controls->Add(this->Username_subheader);
 			this->Controls->Add(this->Background_info_hp);
 			
 			this->Name = L"Student";
@@ -816,7 +816,7 @@ namespace MSP {
 		this->Name_l->Text = stoS(Stu_Cred[curr_sec][student_no].name);
 		this->ID_l->Text = stoS(Stu_Cred[curr_sec][student_no].id);
 		this->Sec_l->Text = stoS(string("Section ") + Sec_list[curr_sec]);
-		this->Email_l->Text = stoS(Stu_Cred[curr_sec][student_no].username);
+		this->Username_l->Text = stoS(Stu_Cred[curr_sec][student_no].username);
 
 		InitializeComponent_Menu();
 	}

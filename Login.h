@@ -202,7 +202,7 @@ namespace MSP {
 			this->Close();
 
 		}
-		else System::Windows::Forms::MessageBox::Show("Incorrect Email or Password.");
+		else System::Windows::Forms::MessageBox::Show("Incorrect Username or Password.");
 	}
 };
 }
