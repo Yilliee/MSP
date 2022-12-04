@@ -1243,7 +1243,7 @@ namespace MSP {
 
 	}
 	private: System::Void Exam_header_click(System::Object^ sender, System::EventArgs^ e) {
-		// TODO: Can't we just store the vertical scroll and then reassign that ??
+		int old_scroll = this->VerticalScroll->Value;
 		// Reset the vertical position of the winform so as to not cause issues with placements
 		this->VerticalScroll->Value = 0;
 
@@ -1258,6 +1258,9 @@ namespace MSP {
 		}
 		// Re-configure the position of the menus
 		reload_button();
+
+		// Return back to the old scrolled position
+		this->VerticalScroll->Value = old_scroll;
 
 		// Adjust the position of menu items accordingly
 		reposition_menu_items();
