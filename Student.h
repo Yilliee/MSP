@@ -673,7 +673,7 @@ namespace MSP {
 				static_cast<System::Byte>(0)));
 			this->Student_Marks_header->Location = System::Drawing::Point(10, 15);
 			this->Student_Marks_header->Name = L"Student_Marks_header";
-			this->Student_Marks_header->Size = System::Drawing::Size(700, 30);
+			this->Student_Marks_header->Size = System::Drawing::Size(820, 30);
 			this->Student_Marks_header->Text = L"Student Marks";
 			this->Student_Marks_header->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
@@ -683,7 +683,7 @@ namespace MSP {
 			this->Subject_selector_cb->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
 			this->Subject_selector_cb->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->Subject_selector_cb->FormattingEnabled = true;
-			this->Subject_selector_cb->Location = System::Drawing::Point(450, 70);
+			this->Subject_selector_cb->Location = System::Drawing::Point(580, 70);
 			this->Subject_selector_cb->Name = L"Subject_selector_cb";
 			this->Subject_selector_cb->TabStop = false;
 			this->Subject_selector_cb->Size = System::Drawing::Size(250, 25);
@@ -702,7 +702,7 @@ namespace MSP {
 				this->Marks_Headers[i]->BackColor = System::Drawing::SystemColors::AppWorkspace;
 				this->Marks_Headers[i]->Font = (gcnew System::Drawing::Font(L"Segoe UI Emoji", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					static_cast<System::Byte>(0)));
-				this->Marks_Headers[i]->Location = System::Drawing::Point(20, 80);
+				this->Marks_Headers[i]->Location = System::Drawing::Point(80, 80);
 				for (int j = 0; j < i; j++)
 					this->Marks_Headers[i]->Top += (Subheader_sizes[j] + 1) * 30 + 60;
 				this->Marks_Headers[i]->Name = stoS(Header_Text[i] + "_header");
@@ -786,7 +786,7 @@ namespace MSP {
 			// 
 			this->AutoScroll = true;
 			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(720, 450);
+			this->ClientSize = System::Drawing::Size(840, 450);
 			this->Controls->Add(this->Student_Marks_header);
 			
 			this->Controls->Add(this->Subject_selector_cb);
