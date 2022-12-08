@@ -5,6 +5,13 @@
 > The main structure is based on [NUCES FAST's flex student portal](https://flexstudent.nu.edu.pk).
 > The program utilizes C++/CLR (WinForm) for its Graphical interface.
 
+## Getting Started
+> Download the MSP executable file from the [releases](https://GitHub.com/Yilliee/MSP/releases).
+> Place it a new folder, and run it.
+> The default password when no Admin Credentials can be found is:
+> Username: `admin`
+> Password: `admin`
+
 ## Features
 ```
 - Add up to 3 administrators
